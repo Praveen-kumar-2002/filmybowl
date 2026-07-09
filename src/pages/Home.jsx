@@ -1,0 +1,154 @@
+import React from 'react';
+import HeroSlider from '../components/HeroSlider';
+import TrendingSidebar from '../components/TrendingSidebar';
+import CategoryBlock from '../components/CategoryBlock';
+import AdBanner from '../components/AdBanner';
+import StatusBar from '../components/StatusBar';
+import PopUpAd from '../components/PopUpAd';
+import { newsArticles } from '../data/newsData';
+import { FiMail, FiVideo, FiImage } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+
+const Home = () => {
+  return (
+    <div className="space-y-6">
+      
+      {/* Top Banner Advertisement */}
+      <AdBanner slotId="top-home-banner-adsense" size="leaderboard" />
+
+      {/* Celebrity Stories/Status Bar */}
+      <StatusBar />
+
+      {/* Main Grid Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Left Side: Slider, Category Blocks, In-between Ads */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* Main Swiper Hero Slider */}
+          <HeroSlider articles={newsArticles} />
+
+          {/* Politics Category Block */}
+          <CategoryBlock 
+            categoryKey="politics" 
+            categoryTelugu="రాజకీయాలు (Politics)" 
+            articles={newsArticles} 
+          />
+
+          {/* Inline Advertisement */}
+          <AdBanner slotId="mid-home-politics-ads" size="inline" />
+
+          {/* Movies Category Block */}
+          <CategoryBlock 
+            categoryKey="movies" 
+            categoryTelugu="సినిమాలు (Movies)" 
+            articles={newsArticles} 
+          />
+
+          {/* Sports Category Block */}
+          <CategoryBlock 
+            categoryKey="sports" 
+            categoryTelugu="క్రీడలు (Sports)" 
+            articles={newsArticles} 
+          />
+
+          {/* Inline Advertisement */}
+          <AdBanner slotId="mid-home-sports-ads" size="inline" />
+
+          {/* Business Category Block */}
+          <CategoryBlock 
+            categoryKey="business" 
+            categoryTelugu="వ్యాపారం (Business)" 
+            articles={newsArticles} 
+          />
+
+          {/* Technology Category Block */}
+          <CategoryBlock 
+            categoryKey="technology" 
+            categoryTelugu="సాంకేతికత (Technology)" 
+            articles={newsArticles} 
+          />
+
+        </div>
+
+        {/* Right Side: Sidebar, Newsletter, Small Ads */}
+        <div className="space-y-6 lg:sticky lg:top-32 self-start">
+          
+          {/* Trending Stories Sidebar */}
+          <TrendingSidebar articles={newsArticles} />
+
+          {/* Sidebar Advertisement */}
+          <AdBanner slotId="sidebar-rect-banner-ads" size="rectangle" />
+
+          {/* Quick Media Widgets */}
+          <div className="bg-gradient-to-br from-red-650 to-red-800 dark:from-red-950 dark:to-neutral-900 text-white rounded-2xl p-6 shadow-md border border-red-500/20 space-y-4">
+            <h3 className="text-base font-black uppercase tracking-wider flex items-center gap-2">
+              <FiVideo className="text-lg animate-pulse" />
+              <span>వీడియో వార్తలు</span>
+            </h3>
+            <p className="text-xs text-red-100 leading-relaxed">
+              తాజా వార్తలు, విశ్లేషణలు మరియు ప్రత్యేక ఇంటర్వ్యూలను మా అధికారిక వీడియో విభాగంలో వీక్షించండి.
+            </p>
+            <Link
+              to="/videos"
+              className="w-full py-2.5 bg-white text-red-700 hover:bg-neutral-100 text-center font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              <span>వీడియోల విభాగం చూడండి</span>
+            </Link>
+          </div>
+
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-850 rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 className="text-base font-bold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+              <FiImage className="text-red-600 text-lg" />
+              <span>చిత్ర మాలిక (Gallery)</span>
+            </h3>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              కీలక రాజకీయ సంఘటనలు, సినీ వేడుకలు మరియు క్రీడా విశేషాల అద్భుతమైన చిత్రాలను మా గ్యాలరీలో చూడండి.
+            </p>
+            <Link
+              to="/gallery"
+              className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-950 dark:hover:bg-neutral-900 text-neutral-800 dark:text-neutral-250 text-center font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all"
+            >
+              <span>ఫోటో గ్యాలరీకి వెళ్ళండి</span>
+            </Link>
+          </div>
+
+          {/* Newsletter subscription widget */}
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-850 rounded-2xl p-6 shadow-sm">
+            <div className="flex items-center gap-2 mb-3 text-neutral-950 dark:text-neutral-50 font-bold text-sm">
+              <FiMail className="text-red-650 text-lg" />
+              <span>వార్తా లేఖకు సబ్‌స్క్రైబ్ అవ్వండి</span>
+            </div>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-4 leading-relaxed">
+              రోజూ తాజా వార్తలను మీ ఈమెయిల్ లో నేరుగా పొందడానికి మీ వివరాలను ఇక్కడ నమోదు చేయండి.
+            </p>
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
+              <input
+                type="email"
+                placeholder="మీ ఈమెయిల్ చిరునామా"
+                required
+                className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 focus:border-red-650 rounded-xl outline-none"
+              />
+              <button
+                type="submit"
+                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-colors"
+              >
+                సబ్‌స్క్రైబ్
+              </button>
+            </form>
+          </div>
+
+          {/* Small Footer banner */}
+          <AdBanner slotId="sidebar-footer-ads" size="inline" className="!my-2" />
+
+        </div>
+
+      </div>
+
+      {/* Delayed Popup Ad Overlay */}
+      <PopUpAd />
+    </div>
+  );
+};
+
+export default Home;

@@ -5,11 +5,12 @@ import CategoryBlock from '../components/CategoryBlock';
 import AdBanner from '../components/AdBanner';
 import StatusBar from '../components/StatusBar';
 import PopUpAd from '../components/PopUpAd';
-import { newsArticles } from '../data/newsData';
+import { useAdminData } from '../context/AdminDataContext';
 import { FiMail, FiVideo, FiImage } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const { articles: newsArticles } = useAdminData();
   return (
     <div className="space-y-6">
       

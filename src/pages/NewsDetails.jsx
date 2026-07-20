@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { newsArticles } from '../data/newsData';
+import { useAdminData } from '../context/AdminDataContext';
 import TrendingSidebar from '../components/TrendingSidebar';
 import AdBanner from '../components/AdBanner';
 import NewsCard from '../components/NewsCard';
@@ -19,6 +19,7 @@ import {
 
 const NewsDetails = () => {
   const { id } = useParams();
+  const { articles: newsArticles } = useAdminData();
   const [article, setArticle] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);
   const [comments, setComments] = useState([

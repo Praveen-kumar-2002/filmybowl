@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { newsArticles } from '../data/newsData';
+import { useAdminData } from '../context/AdminDataContext';
 import NewsCard from '../components/NewsCard';
 import TrendingSidebar from '../components/TrendingSidebar';
 import AdBanner from '../components/AdBanner';
@@ -9,6 +9,7 @@ import { FiHome, FiChevronRight, FiSearch, FiInfo } from 'react-icons/fi';
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParam = searchParams.get('q') || '';
+  const { articles: newsArticles } = useAdminData();
   const [searchInput, setSearchInput] = useState(queryParam);
   const [searchResults, setSearchResults] = useState([]);
 

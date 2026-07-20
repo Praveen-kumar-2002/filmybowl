@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { newsArticles } from '../data/newsData';
+import { useAdminData } from '../context/AdminDataContext';
 import NewsCard from '../components/NewsCard';
 import TrendingSidebar from '../components/TrendingSidebar';
 import AdBanner from '../components/AdBanner';
@@ -8,6 +8,7 @@ import { FiHome, FiChevronRight, FiGrid, FiList } from 'react-icons/fi';
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
+  const { articles: newsArticles } = useAdminData();
   const [layoutMode, setLayoutMode] = useState('grid'); // grid or list
   const [filteredArticles, setFilteredArticles] = useState([]);
 

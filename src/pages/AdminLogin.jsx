@@ -10,27 +10,61 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('expired') === 'true') {
+      setError('సెషన్ గడువు ముగిసింది. భద్రతా కారణాల దృష్ట్యా మీరు లాగ్ అవుట్ చేయబడ్డారు. (Session expired. Please log in again.)');
+    }
+  }, []);
+
+  useEffect(() => {
     // If already authenticated, redirect straight to dashboard
     if (sessionStorage.getItem('filmybowl_admin_auth') === 'true') {
       navigate('/admin');
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Simulate authenticating
+    try {
+      // Attempt API authentication
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        sessionStorage.setItem('filmybowl_admin_auth', 'true');
+        sessionStorage.setItem('filmybowl_admin_auth_token', data.token);
+        sessionStorage.setItem('filmybowl_admin_auth_time', Date.now().toString());
+        navigate('/admin');
+        return;
+      } else {
+        const data = await response.json();
+        setError(data.error || 'వినియోగదారు పేరు లేదా పాస్‌వర్డ్ తప్పు.');
+        setLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.warn('Authentication server offline. Attempting offline fallback check...', err);
+    }
+
+    // Local authentication fallback if server is offline
     setTimeout(() => {
       if (username.toLowerCase() === 'admin' && password === 'filmybowl') {
         sessionStorage.setItem('filmybowl_admin_auth', 'true');
+        sessionStorage.setItem('filmybowl_admin_auth_token', 'offline_fallback_token');
+        sessionStorage.setItem('filmybowl_admin_auth_time', Date.now().toString());
         navigate('/admin');
       } else {
         setError('వినియోగదారు పేరు లేదా పాస్‌వర్డ్ తప్పు. దయచేసి మళ్ళీ ప్రయత్నించండి.');
         setLoading(false);
       }
-    }, 1000);
+    }, 800);
   };
 
   return (

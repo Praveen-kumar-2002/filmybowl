@@ -2,10 +2,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { newsArticles } from '../data/newsData';
 
 const AdminDataContext = createContext();
+const API_BASE = 'http://localhost:5000/api';
 
 export const useAdminData = () => useContext(AdminDataContext);
 
 export const AdminDataProvider = ({ children }) => {
+  const [isOnline, setIsOnline] = useState(false);
+
   // 1. Articles State
   const [articles, setArticles] = useState(() => {
     const saved = localStorage.getItem('filmybowl_articles');
@@ -95,6 +98,48 @@ export const AdminDataProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : defaultSettings;
   });
 
+  // Helper auth headers
+  const getAuthHeaders = () => {
+    const token = sessionStorage.getItem('filmybowl_admin_auth_token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
+  // INITIAL DATABASE SYNC ON LOAD
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const [arts, cats, coms, ads, news, phs, vds, sets] = await Promise.all([
+          fetch(`${API_BASE}/articles`).then(res => res.json()),
+          fetch(`${API_BASE}/categories`).then(res => res.json()),
+          fetch(`${API_BASE}/comments`).then(res => res.json()),
+          fetch(`${API_BASE}/popup-ads`).then(res => res.json()),
+          fetch(`${API_BASE}/breaking-news`).then(res => res.json()),
+          fetch(`${API_BASE}/photos`).then(res => res.json()),
+          fetch(`${API_BASE}/videos`).then(res => res.json()),
+          fetch(`${API_BASE}/settings`).then(res => res.json())
+        ]);
+        
+        setArticles(arts);
+        setCategories(cats);
+        setComments(coms);
+        setPopupAds(ads);
+        setBreakingNews(news);
+        setPhotos(phs);
+        setVideos(vds);
+        setSettings(sets);
+        setIsOnline(true);
+        console.log('Connected to Filmybowl local backend API.');
+      } catch (err) {
+        console.warn('Backend server offline. Running in Local Mock Storage mode.', err);
+        setIsOnline(false);
+      }
+    };
+    fetchAllData();
+  }, []);
+
   // Sync to localStorage
   useEffect(() => {
     localStorage.setItem('filmybowl_articles', JSON.stringify(articles));
@@ -129,7 +174,24 @@ export const AdminDataProvider = ({ children }) => {
   }, [settings]);
 
   // ARTICLES OPERATIONS
-  const addArticle = (article) => {
+  const addArticle = async (article) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/articles`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(article)
+        });
+        if (response.ok) {
+          const newArticle = await response.json();
+          setArticles(prev => [newArticle, ...prev]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     const newArticle = {
       ...article,
       id: `art-${Date.now()}`,
@@ -139,18 +201,67 @@ export const AdminDataProvider = ({ children }) => {
     setArticles((prev) => [newArticle, ...prev]);
   };
 
-  const editArticle = (id, updatedFields) => {
+  const editArticle = async (id, updatedFields) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/articles/${id}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(updatedFields)
+        });
+        if (response.ok) {
+          const updated = await response.json();
+          setArticles(prev => prev.map(art => art.id === id ? updated : art));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setArticles((prev) =>
       prev.map((art) => (art.id === id ? { ...art, ...updatedFields } : art))
     );
   };
 
-  const deleteArticle = (id) => {
+  const deleteArticle = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/articles/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setArticles(prev => prev.filter(art => art.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setArticles((prev) => prev.filter((art) => art.id !== id));
   };
 
   // CATEGORIES OPERATIONS
-  const addCategory = (category) => {
+  const addCategory = async (category) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/categories`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(category)
+        });
+        if (response.ok) {
+          const newCategory = await response.json();
+          setCategories(prev => [...prev, newCategory]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     const newCategory = {
       ...category,
       id: `cat-${Date.now()}`,
@@ -159,22 +270,86 @@ export const AdminDataProvider = ({ children }) => {
     setCategories((prev) => [...prev, newCategory]);
   };
 
-  const editCategory = (id, updatedFields) => {
+  const editCategory = async (id, updatedFields) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/categories/${id}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(updatedFields)
+        });
+        if (response.ok) {
+          const updated = await response.json();
+          setCategories(prev => prev.map(cat => cat.id === id ? updated : cat));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setCategories((prev) =>
       prev.map((cat) => (cat.id === id ? { ...cat, ...updatedFields, key: (updatedFields.nameEnglish || cat.nameEnglish).toLowerCase().replace(/\s+/g, '-') } : cat))
     );
   };
 
-  const deleteCategory = (id) => {
+  const deleteCategory = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/categories/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setCategories(prev => prev.filter(cat => cat.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setCategories((prev) => prev.filter((cat) => cat.id !== id));
   };
 
   // COMMENTS OPERATIONS
-  const deleteComment = (id) => {
+  const deleteComment = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/comments/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setComments(prev => prev.filter(com => com.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setComments((prev) => prev.filter((com) => com.id !== id));
   };
 
-  const addComment = (comment) => {
+  const addComment = async (comment) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(comment)
+        });
+        if (response.ok) {
+          const newComment = await response.json();
+          setComments(prev => [newComment, ...prev]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     const newComment = {
       ...comment,
       id: `com-${Date.now()}`,
@@ -184,75 +359,258 @@ export const AdminDataProvider = ({ children }) => {
   };
 
   // POPUP ADS OPERATIONS
-  const addPopupAd = (ad) => {
-    const newAd = {
-      ...ad,
-      id: `ad-${Date.now()}`
-    };
+  const addPopupAd = async (ad) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/popup-ads`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(ad)
+        });
+        if (response.ok) {
+          const newAd = await response.json();
+          setPopupAds(prev => [newAd, ...prev]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
+    const newAd = { ...ad, id: `ad-${Date.now()}` };
     setPopupAds((prev) => [newAd, ...prev]);
   };
 
-  const editPopupAd = (id, updatedFields) => {
+  const editPopupAd = async (id, updatedFields) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/popup-ads/${id}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(updatedFields)
+        });
+        if (response.ok) {
+          const updated = await response.json();
+          setPopupAds(prev => prev.map(ad => ad.id === id ? updated : ad));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setPopupAds((prev) =>
       prev.map((ad) => (ad.id === id ? { ...ad, ...updatedFields } : ad))
     );
   };
 
-  const deletePopupAd = (id) => {
+  const deletePopupAd = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/popup-ads/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setPopupAds(prev => prev.filter(ad => ad.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setPopupAds((prev) => prev.filter((ad) => ad.id !== id));
   };
 
   // BREAKING NEWS OPERATIONS
-  const addBreakingNews = (news) => {
-    const newNews = {
-      ...news,
-      id: `bn-${Date.now()}`
-    };
+  const addBreakingNews = async (news) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/breaking-news`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(news)
+        });
+        if (response.ok) {
+          const newNews = await response.json();
+          setBreakingNews(prev => [newNews, ...prev]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
+    const newNews = { ...news, id: `bn-${Date.now()}` };
     setBreakingNews((prev) => [newNews, ...prev]);
   };
 
-  const editBreakingNews = (id, updatedFields) => {
+  const editBreakingNews = async (id, updatedFields) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/breaking-news/${id}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(updatedFields)
+        });
+        if (response.ok) {
+          const updated = await response.json();
+          setBreakingNews(prev => prev.map(n => n.id === id ? updated : n));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setBreakingNews((prev) =>
       prev.map((news) => (news.id === id ? { ...news, ...updatedFields } : news))
     );
   };
 
-  const deleteBreakingNews = (id) => {
+  const deleteBreakingNews = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/breaking-news/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setBreakingNews(prev => prev.filter(n => n.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setBreakingNews((prev) => prev.filter((news) => news.id !== id));
   };
 
   // PHOTOS OPERATIONS
-  const addPhoto = (photo) => {
-    const newPhoto = {
-      ...photo,
-      id: `ph-${Date.now()}`
-    };
+  const addPhoto = async (photo) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/photos`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(photo)
+        });
+        if (response.ok) {
+          const newPhoto = await response.json();
+          setPhotos(prev => [newPhoto, ...prev]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
+    const newPhoto = { ...photo, id: `ph-${Date.now()}` };
     setPhotos((prev) => [newPhoto, ...prev]);
   };
 
-  const deletePhoto = (id) => {
+  const deletePhoto = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/photos/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setPhotos(prev => prev.filter(ph => ph.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setPhotos((prev) => prev.filter((ph) => ph.id !== id));
   };
 
   // VIDEOS OPERATIONS
-  const addVideo = (video) => {
-    const newVideo = {
-      ...video,
-      id: `vd-${Date.now()}`
-    };
+  const addVideo = async (video) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/videos`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(video)
+        });
+        if (response.ok) {
+          const newVideo = await response.json();
+          setVideos(prev => [newVideo, ...prev]);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
+    const newVideo = { ...video, id: `vd-${Date.now()}` };
     setVideos((prev) => [newVideo, ...prev]);
   };
 
-  const deleteVideo = (id) => {
+  const deleteVideo = async (id) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/videos/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          setVideos(prev => prev.filter(vd => vd.id !== id));
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setVideos((prev) => prev.filter((vd) => vd.id !== id));
   };
 
   // SETTINGS OPERATIONS
-  const updateSettings = (updatedFields) => {
+  const updateSettings = async (updatedFields) => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/settings`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(updatedFields)
+        });
+        if (response.ok) {
+          const updated = await response.json();
+          setSettings(updated);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     setSettings((prev) => ({ ...prev, ...updatedFields }));
   };
 
-  const resetSettings = () => {
+  const resetSettings = async () => {
+    if (isOnline) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/settings/reset`, {
+          method: 'POST',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          const updated = await response.json();
+          setSettings(updated);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Local fallback
     const defaultSettings = {
       websiteName: 'Filmybowl',
       logoUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=150&q=80',
@@ -274,6 +632,7 @@ export const AdminDataProvider = ({ children }) => {
   return (
     <AdminDataContext.Provider
       value={{
+        isOnline,
         articles,
         categories,
         comments,

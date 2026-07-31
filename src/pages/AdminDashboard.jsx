@@ -70,11 +70,48 @@ const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // Authentication gate check
+  // Authentication & Session Expiry gate check
   useEffect(() => {
+    // Initial check
     if (sessionStorage.getItem('filmybowl_admin_auth') !== 'true') {
       navigate('/admin/login');
+      return;
     }
+
+    const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes
+
+    const checkSession = () => {
+      const authTime = sessionStorage.getItem('filmybowl_admin_auth_time');
+      if (authTime) {
+        const timeElapsed = Date.now() - parseInt(authTime, 10);
+        if (timeElapsed > SESSION_TIMEOUT) {
+          sessionStorage.removeItem('filmybowl_admin_auth');
+          sessionStorage.removeItem('filmybowl_admin_auth_time');
+          navigate('/admin/login?expired=true');
+        }
+      } else {
+        // No timestamp, logout
+        sessionStorage.removeItem('filmybowl_admin_auth');
+        navigate('/admin/login');
+      }
+    };
+
+    const resetSessionTimer = () => {
+      if (sessionStorage.getItem('filmybowl_admin_auth') === 'true') {
+        sessionStorage.setItem('filmybowl_admin_auth_time', Date.now().toString());
+      }
+    };
+
+    checkSession();
+    const interval = setInterval(checkSession, 10000); // Check every 10 seconds
+
+    const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'click'];
+    events.forEach(event => window.addEventListener(event, resetSessionTimer));
+
+    return () => {
+      clearInterval(interval);
+      events.forEach(event => window.removeEventListener(event, resetSessionTimer));
+    };
   }, [navigate]);
 
   const confirmLogout = () => {

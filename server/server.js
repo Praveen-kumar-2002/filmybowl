@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import swaggerUi from 'swagger-ui-express';
 
 // Parse directory paths in ES Modules
 const __filename = fileURLToPath(importURL(import.meta.url));
@@ -17,6 +18,147 @@ const JWT_SECRET = 'filmybowl_jwt_secret_token_key_2026';
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Interactive Swagger OpenAPI spec definition
+const swaggerDocument = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Filmybowl News Portal API Documentation',
+    version: '1.0.0',
+    description: 'Interactive REST API documentation for Filmybowl news content and administrative actions.'
+  },
+  servers: [
+    {
+      url: 'http://localhost:5000',
+      description: 'Local development server'
+    }
+  ],
+  components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
+      }
+    }
+  },
+  paths: {
+    '/api/auth/login': {
+      post: {
+        tags: ['Authentication'],
+        summary: 'Admin Log In',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  username: { type: 'string', example: 'admin' },
+                  password: { type: 'string', example: 'filmybowl' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: { description: 'Authenticated successfully' }
+        }
+      }
+    },
+    '/api/articles': {
+      get: {
+        tags: ['Articles'],
+        summary: 'Get Articles list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    },
+    '/api/admin/articles': {
+      post: {
+        tags: ['Articles (Admin)'],
+        summary: 'Add Article',
+        security: [{ BearerAuth: [] }],
+        responses: {
+          201: { description: 'Created' }
+        }
+      }
+    },
+    '/api/categories': {
+      get: {
+        tags: ['Categories'],
+        summary: 'Get Categories list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    },
+    '/api/comments': {
+      get: {
+        tags: ['Comments'],
+        summary: 'Get Comments list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      },
+      post: {
+        tags: ['Comments'],
+        summary: 'Submit Comment (Public)',
+        responses: {
+          201: { description: 'Success' }
+        }
+      }
+    },
+    '/api/popup-ads': {
+      get: {
+        tags: ['Popup Ads'],
+        summary: 'Get Popup Ads list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    },
+    '/api/breaking-news': {
+      get: {
+        tags: ['Breaking News'],
+        summary: 'Get Breaking News list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    },
+    '/api/photos': {
+      get: {
+        tags: ['Gallery'],
+        summary: 'Get Photos list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    },
+    '/api/videos': {
+      get: {
+        tags: ['Videos'],
+        summary: 'Get Videos list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    },
+    '/api/settings': {
+      get: {
+        tags: ['Settings'],
+        summary: 'Get Settings list',
+        responses: {
+          200: { description: 'Success' }
+        }
+      }
+    }
+  }
+};
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Helper function to safely read import URL
 function importURL(url) {
@@ -576,9 +718,9 @@ app.post('/api/admin/settings/reset', verifyToken, async (req, res) => {
 });
 
 // START EXPRESS SERVER
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 initializeDatabase().then(() => {
   app.listen(PORT, () => {
-    console.log(`Filmybowl Backend Server running on http://localhost:${PORT}`);
+    console.log(`Filmybowl Backend Server running on port ${PORT}`);
   });
 });

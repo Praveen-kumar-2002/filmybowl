@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { newsArticles } from '../data/newsData';
 
 const AdminDataContext = createContext();
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://filmybowl-production.up.railway.app/api';
 
 export const useAdminData = () => useContext(AdminDataContext);
 

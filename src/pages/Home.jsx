@@ -5,6 +5,7 @@ import CategoryBlock from '../components/CategoryBlock';
 import AdBanner from '../components/AdBanner';
 import StatusBar from '../components/StatusBar';
 import PopUpAd from '../components/PopUpAd';
+import CornerAd from '../components/CornerAd';
 import HomepageBillboardAd from '../components/HomepageBillboardAd';
 import { useAdminData } from '../context/AdminDataContext';
 import { FiMail, FiVideo, FiImage } from 'react-icons/fi';
@@ -156,6 +157,9 @@ const Home = () => {
 
       {/* Delayed Popup Ad Overlay */}
       <PopUpAd />
+      
+      {/* Corner Ad Floating widget */}
+      <CornerAd />
     </div>
   );
 };

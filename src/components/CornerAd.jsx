@@ -13,6 +13,10 @@ const CornerAd = () => {
   useEffect(() => {
     if (!cornerAd) return;
 
+    // Show the corner ad 8 seconds after website load
+    const hasBeenClosed = sessionStorage.getItem('corner_ad_closed');
+    if (hasBeenClosed === 'true') return;
+
     const timer = setTimeout(() => {
       setIsOpen(true);
     }, 8000);

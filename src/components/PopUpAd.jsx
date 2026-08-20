@@ -15,8 +15,13 @@ const PopUpAd = () => {
   useEffect(() => {
     if (activeAds.length === 0) return;
 
+    // Show popup ad after 3 seconds delay if not already shown in this session
+    const hasBeenShown = sessionStorage.getItem('popup_ad_shown');
+    if (hasBeenShown === 'true') return;
+
     const showTimer = setTimeout(() => {
       setIsOpen(true);
+      sessionStorage.setItem('popup_ad_shown', 'true');
     }, 3000);
 
     return () => clearTimeout(showTimer);

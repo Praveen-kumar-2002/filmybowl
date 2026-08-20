@@ -19,7 +19,7 @@ const AppRoutes = () => {
       <Route path="/category/:categoryName" element={<CategoryPage />} />
       <Route path="/news/:id" element={<NewsDetails />} />
       <Route path="/gallery" element={<Gallery />} />
-      <Route path="/gallery/:galleryId/photo-:photoIndex" element={<GalleryDetails />} />
+      <Route path="/gallery/:galleryId/:photoIndex" element={<GalleryDetails />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/contact" element={<Contact />} />

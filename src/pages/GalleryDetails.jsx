@@ -28,7 +28,7 @@ const GalleryDetails = () => {
   }
 
   // Parse the current 1-based photo index
-  const currentIndex = parseInt(photoIndex, 10) || 1;
+  const currentIndex = parseInt(photoIndex ? photoIndex.replace('photo-', '') : '1', 10) || 1;
   const totalPhotos = article.gallery.length;
 
   // Clamp index within bounds

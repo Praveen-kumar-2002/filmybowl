@@ -5,7 +5,6 @@ import { useAdminData } from '../context/AdminDataContext';
 const HomepageBillboardAd = () => {
   const { settings } = useAdminData();
   const [isOpen, setIsOpen] = useState(true);
-  const [countdown, setCountdown] = useState(30);
 
   // Retrieve ad image and link from settings with fallback values
   const adImage = settings?.billboardAdImage || "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80";
@@ -23,20 +22,13 @@ const HomepageBillboardAd = () => {
     // Lock body scrolling when the takeover is open
     document.body.style.overflow = 'hidden';
 
-    // Interval countdown timer
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          handleClose();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    // Silent 30-second auto-close timer (runs in background with no visible output)
+    const timer = setTimeout(() => {
+      handleClose();
+    }, 30000);
 
     return () => {
-      clearInterval(interval);
+      clearTimeout(timer);
       document.body.style.overflow = 'unset';
     };
   }, []);
@@ -61,7 +53,7 @@ const HomepageBillboardAd = () => {
             {/* Left: Branding Logo */}
             <div className="flex items-center">
               <span className="text-lg md:text-xl font-black text-neutral-900 tracking-wider uppercase font-mono">
-                FILMY<span className="text-red-650">BOWL</span><span className="text-xs font-bold text-neutral-500 font-sans">.com</span>
+                FILMY<span className="text-red-655">BOWL</span><span className="text-xs font-bold text-neutral-500 font-sans">.com</span>
               </span>
             </div>
 
@@ -76,7 +68,7 @@ const HomepageBillboardAd = () => {
                 onClick={handleClose}
                 className="bg-[#e0f2fe] hover:bg-[#bae6fd] active:scale-95 text-[#0369a1] font-bold text-[11px] md:text-xs px-4 py-1.5 border border-[#bae6fd] rounded transition-all cursor-pointer"
               >
-                Skip Ad {countdown > 0 && `(${countdown})`}
+                Skip Ad
               </button>
             </div>
           </div>

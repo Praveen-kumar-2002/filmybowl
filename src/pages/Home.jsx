@@ -5,6 +5,7 @@ import CategoryBlock from '../components/CategoryBlock';
 import AdBanner from '../components/AdBanner';
 import StatusBar from '../components/StatusBar';
 import PopUpAd from '../components/PopUpAd';
+import HomepageBillboardAd from '../components/HomepageBillboardAd';
 import { useAdminData } from '../context/AdminDataContext';
 import { FiMail, FiVideo, FiImage } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -14,8 +15,8 @@ const Home = () => {
   return (
     <div className="space-y-6">
       
-      {/* Top Banner Advertisement */}
-      <AdBanner slotId="top-home-banner-adsense" size="leaderboard" />
+      {/* Top Banner Billboard Advertisement with 30s auto-skip */}
+      <HomepageBillboardAd />
 
       {/* Celebrity Stories/Status Bar */}
       <StatusBar />
@@ -29,44 +30,51 @@ const Home = () => {
           {/* Main Swiper Hero Slider */}
           <HeroSlider articles={newsArticles} />
 
-          {/* Politics Category Block */}
+          {/* Film News Category Block */}
           <CategoryBlock 
-            categoryKey="politics" 
-            categoryTelugu="రాజకీయాలు (Politics)" 
+            categoryKey="film-news" 
+            categoryTelugu="ఫిల్మ్ న్యూస్ (Film News)" 
             articles={newsArticles} 
           />
 
           {/* Inline Advertisement */}
-          <AdBanner slotId="mid-home-politics-ads" size="inline" />
+          <AdBanner slotId="mid-home-film-news-ads" size="inline" />
 
-          {/* Movies Category Block */}
+          {/* News Category Block */}
           <CategoryBlock 
-            categoryKey="movies" 
-            categoryTelugu="సినిమాలు (Movies)" 
+            categoryKey="news" 
+            categoryTelugu="వార్తలు (News)" 
             articles={newsArticles} 
           />
 
-          {/* Sports Category Block */}
+          {/* Reviews Category Block */}
           <CategoryBlock 
-            categoryKey="sports" 
-            categoryTelugu="క్రీడలు (Sports)" 
+            categoryKey="reviews" 
+            categoryTelugu="రివ్యూలు (Reviews)" 
             articles={newsArticles} 
           />
 
           {/* Inline Advertisement */}
-          <AdBanner slotId="mid-home-sports-ads" size="inline" />
+          <AdBanner slotId="mid-home-reviews-ads" size="inline" />
 
-          {/* Business Category Block */}
+          {/* Box Office News Category Block */}
           <CategoryBlock 
-            categoryKey="business" 
-            categoryTelugu="వ్యాపారం (Business)" 
+            categoryKey="box-office-news" 
+            categoryTelugu="బాక్స్ ఆఫీస్ వార్తలు (Box Office News)" 
             articles={newsArticles} 
           />
 
-          {/* Technology Category Block */}
+          {/* Live Tracking Category Block */}
           <CategoryBlock 
-            categoryKey="technology" 
-            categoryTelugu="సాంకేతికత (Technology)" 
+            categoryKey="live-tracking" 
+            categoryTelugu="లైవ్ ట్రాకింగ్ (Live Tracking)" 
+            articles={newsArticles} 
+          />
+
+          {/* Polls Category Block */}
+          <CategoryBlock 
+            categoryKey="polls" 
+            categoryTelugu="పోల్స్ (Polls)" 
             articles={newsArticles} 
           />
 

@@ -666,7 +666,7 @@ app.put('/api/admin/settings', verifyToken, async (req, res) => {
   const values = [];
 
   Object.keys(req.body).forEach(key => {
-    if (['websiteName', 'logoUrl', 'faviconUrl', 'contactEmail', 'phoneNumber', 'facebookUrl', 'instagramUrl', 'youtubeUrl', 'twitterUrl', 'metaTitle', 'metaDescription', 'keywords', 'theme'].includes(key)) {
+    if (['websiteName', 'logoUrl', 'faviconUrl', 'contactEmail', 'phoneNumber', 'facebookUrl', 'instagramUrl', 'youtubeUrl', 'twitterUrl', 'metaTitle', 'metaDescription', 'keywords', 'theme', 'billboardAdImage', 'billboardAdLink'].includes(key)) {
       fieldsToUpdate.push(`\`${key}\` = ?`);
       values.push(req.body[key]);
     }
@@ -704,12 +704,14 @@ app.post('/api/admin/settings/reset', verifyToken, async (req, res) => {
     metaTitle: 'Filmybowl - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
     metaDescription: 'ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
     keywords: 'Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
-    theme: 'Dark'
+    theme: 'Dark',
+    billboardAdImage: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80',
+    billboardAdLink: 'https://images.unsplash.com'
   };
 
   try {
     await pool.query(
-      'UPDATE settings SET websiteName = ?, logoUrl = ?, faviconUrl = ?, contactEmail = ?, phoneNumber = ?, facebookUrl = ?, instagramUrl = ?, youtubeUrl = ?, twitterUrl = ?, metaTitle = ?, metaDescription = ?, keywords = ?, theme = ? WHERE id = 1',
+      'UPDATE settings SET websiteName = ?, logoUrl = ?, faviconUrl = ?, contactEmail = ?, phoneNumber = ?, facebookUrl = ?, instagramUrl = ?, youtubeUrl = ?, twitterUrl = ?, metaTitle = ?, metaDescription = ?, keywords = ?, theme = ?, billboardAdImage = ?, billboardAdLink = ? WHERE id = 1',
       [
         defaultSettings.websiteName,
         defaultSettings.logoUrl,
@@ -723,7 +725,9 @@ app.post('/api/admin/settings/reset', verifyToken, async (req, res) => {
         defaultSettings.metaTitle,
         defaultSettings.metaDescription,
         defaultSettings.keywords,
-        defaultSettings.theme
+        defaultSettings.theme,
+        defaultSettings.billboardAdImage,
+        defaultSettings.billboardAdLink
       ]
     );
     const [rows] = await pool.query('SELECT * FROM settings WHERE id = 1');

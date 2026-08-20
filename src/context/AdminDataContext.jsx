@@ -12,18 +12,29 @@ export const AdminDataProvider = ({ children }) => {
   // 1. Articles State
   const [articles, setArticles] = useState(() => {
     const saved = localStorage.getItem('filmybowl_articles');
-    return saved ? JSON.parse(saved) : newsArticles;
+    const list = saved ? JSON.parse(saved) : newsArticles;
+    return list.map(art => {
+      if (['politics', 'sports', 'business', 'technology'].includes(art.category)) {
+        return { ...art, category: 'news', categoryTelugu: 'వార్తలు' };
+      }
+      if (art.category === 'movies') {
+        return { ...art, category: 'film-news', categoryTelugu: 'ఫిల్మ్ న్యూస్' };
+      }
+      return art;
+    });
   });
 
   // 2. Categories State
   const [categories, setCategories] = useState(() => {
     const saved = localStorage.getItem('filmybowl_categories');
     return saved ? JSON.parse(saved) : [
-      { id: 'cat-1', key: 'politics', nameTelugu: 'రాజకీయాలు', nameEnglish: 'Politics' },
-      { id: 'cat-2', key: 'movies', nameTelugu: 'సినిమాలు', nameEnglish: 'Movies' },
-      { id: 'cat-3', key: 'sports', nameTelugu: 'క్రీడలు', nameEnglish: 'Sports' },
-      { id: 'cat-4', key: 'business', nameTelugu: 'వ్యాపారం', nameEnglish: 'Business' },
-      { id: 'cat-5', key: 'technology', nameTelugu: 'సాంకేతిక సమాచారం', nameEnglish: 'Technology' }
+      { id: 'cat-1', key: 'film-news', nameTelugu: 'ఫిల్మ్ న్యూస్', nameEnglish: 'Film News' },
+      { id: 'cat-2', key: 'news', nameTelugu: 'వార్తలు', nameEnglish: 'News' },
+      { id: 'cat-3', key: 'reviews', nameTelugu: 'రివ్యూలు', nameEnglish: 'Reviews' },
+      { id: 'cat-4', key: 'gallery', nameTelugu: 'గ్యాలరీ', nameEnglish: 'Gallery' },
+      { id: 'cat-5', key: 'box-office-news', nameTelugu: 'బాక్స్ ఆఫీస్ వార్తలు', nameEnglish: 'Box Office News' },
+      { id: 'cat-6', key: 'live-tracking', nameTelugu: 'లైవ్ ట్రాకింగ్', nameEnglish: 'Live Tracking' },
+      { id: 'cat-7', key: 'polls', nameTelugu: 'పోల్స్', nameEnglish: 'Polls' }
     ];
   });
 
@@ -93,7 +104,9 @@ export const AdminDataProvider = ({ children }) => {
       metaTitle: 'Filmybowl - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
       metaDescription: 'ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
       keywords: 'Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
-      theme: 'Dark'
+      theme: 'Dark',
+      billboardAdImage: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80',
+      billboardAdLink: 'https://images.unsplash.com'
     };
     return saved ? JSON.parse(saved) : defaultSettings;
   });
@@ -122,7 +135,16 @@ export const AdminDataProvider = ({ children }) => {
           fetch(`${API_BASE}/settings`).then(res => res.json())
         ]);
         
-        setArticles(arts);
+        const mappedArts = arts.map(art => {
+          if (['politics', 'sports', 'business', 'technology'].includes(art.category)) {
+            return { ...art, category: 'news', categoryTelugu: 'వార్తలు' };
+          }
+          if (art.category === 'movies') {
+            return { ...art, category: 'film-news', categoryTelugu: 'ఫిల్మ్ న్యూస్' };
+          }
+          return art;
+        });
+        setArticles(mappedArts);
         setCategories(cats);
         setComments(coms);
         setPopupAds(ads);

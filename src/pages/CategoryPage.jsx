@@ -14,11 +14,13 @@ const CategoryPage = () => {
 
   // Category translation mapping
   const categoryTitles = {
-    politics: { te: 'రాజకీయాలు', en: 'Politics' },
-    movies: { te: 'సినిమాలు', en: 'Movies' },
-    sports: { te: 'క్రీడలు', en: 'Sports' },
-    business: { te: 'వ్యాపారం', en: 'Business' },
-    technology: { te: 'సాంకేతికత', en: 'Technology' }
+    'film-news': { te: 'ఫిల్మ్ న్యూస్', en: 'Film News' },
+    'news': { te: 'వార్తలు', en: 'News' },
+    'reviews': { te: 'రివ్యూలు', en: 'Reviews' },
+    'gallery': { te: 'గ్యాలరీ', en: 'Gallery' },
+    'box-office-news': { te: 'బాక్స్ ఆఫీస్ వార్తలు', en: 'Box Office News' },
+    'live-tracking': { te: 'లైవ్ ట్రాకింగ్', en: 'Live Tracking' },
+    'polls': { te: 'పోల్స్', en: 'Polls' }
   };
 
   const currentCategory = categoryTitles[categoryName] || { te: 'వార్తలు', en: 'News' };

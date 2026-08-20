@@ -59,25 +59,25 @@ const Footer = () => {
             </h3>
             <ul className="grid grid-cols-2 gap-2 text-sm">
               <li>
-                <Link to="/category/politics" className="hover:text-red-500 transition-colors duration-200 block py-1">రాజకీయాలు</Link>
+                <Link to="/category/film-news" className="hover:text-red-500 transition-colors duration-200 block py-1">ఫిల్మ్ న్యూస్</Link>
               </li>
               <li>
-                <Link to="/category/movies" className="hover:text-red-500 transition-colors duration-200 block py-1">సినిమాలు</Link>
+                <Link to="/category/news" className="hover:text-red-500 transition-colors duration-200 block py-1">వార్తలు</Link>
               </li>
               <li>
-                <Link to="/category/sports" className="hover:text-red-500 transition-colors duration-200 block py-1">క్రీడలు</Link>
-              </li>
-              <li>
-                <Link to="/category/business" className="hover:text-red-500 transition-colors duration-200 block py-1">వ్యాపారం</Link>
-              </li>
-              <li>
-                <Link to="/category/technology" className="hover:text-red-500 transition-colors duration-200 block py-1">సాంకేతికత</Link>
+                <Link to="/category/reviews" className="hover:text-red-500 transition-colors duration-200 block py-1">రివ్యూలు</Link>
               </li>
               <li>
                 <Link to="/gallery" className="hover:text-red-500 transition-colors duration-200 block py-1">గ్యాలరీ</Link>
               </li>
               <li>
-                <Link to="/videos" className="hover:text-red-500 transition-colors duration-200 block py-1">వీడియోలు</Link>
+                <Link to="/category/box-office-news" className="hover:text-red-500 transition-colors duration-200 block py-1">బాక్స్ ఆఫీస్ వార్తలు</Link>
+              </li>
+              <li>
+                <Link to="/category/live-tracking" className="hover:text-red-500 transition-colors duration-200 block py-1">లైవ్ ట్రాకింగ్</Link>
+              </li>
+              <li>
+                <Link to="/category/polls" className="hover:text-red-500 transition-colors duration-200 block py-1">పోల్స్</Link>
               </li>
             </ul>
           </div>

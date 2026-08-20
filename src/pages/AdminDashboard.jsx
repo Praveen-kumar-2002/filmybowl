@@ -127,7 +127,7 @@ const AdminDashboard = () => {
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
   const [artTitle, setArtTitle] = useState('');
-  const [artCategory, setArtCategory] = useState('politics');
+  const [artCategory, setArtCategory] = useState('film-news');
   const [artAuthor, setArtAuthor] = useState('');
   const [artImage, setArtImage] = useState('');
   const [artDesc, setArtDesc] = useState('');
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
     } else {
       setEditingArticle(null);
       setArtTitle('');
-      setArtCategory(categories[0]?.key || 'politics');
+      setArtCategory(categories[0]?.key || 'film-news');
       setArtAuthor('Admin Editor');
       setArtImage('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80');
       setArtDesc('');
@@ -377,6 +377,9 @@ const AdminDashboard = () => {
   const [setKeywords, setSetKeywords] = useState(settings.keywords);
   const [setThemeMode, setSetThemeMode] = useState(settings.theme);
 
+  const [setBillboardImage, setSetBillboardImage] = useState(settings.billboardAdImage || '');
+  const [setBillboardLink, setSetBillboardLink] = useState(settings.billboardAdLink || '');
+
   const handleSettingsSave = (e) => {
     e.preventDefault();
     updateSettings({
@@ -392,7 +395,9 @@ const AdminDashboard = () => {
       metaTitle: setMetaTitle,
       metaDescription: setMetaDesc,
       keywords: setKeywords,
-      theme: setThemeMode
+      theme: setThemeMode,
+      billboardAdImage: setBillboardImage,
+      billboardAdLink: setBillboardLink
     });
     alert('మ్యాప్ చేయబడిన వివరాలు సేవ్ చేయబడ్డాయి! (Settings saved successfully)');
   };
@@ -412,6 +417,8 @@ const AdminDashboard = () => {
     setSetMetaDesc('ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.');
     setSetKeywords('Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office');
     setSetThemeMode('Dark');
+    setSetBillboardImage('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80');
+    setSetBillboardLink('https://images.unsplash.com');
   };
 
   // -------------------------------------------------------------
@@ -1213,25 +1220,25 @@ const AdminDashboard = () => {
                     <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Category distribution</h3>
                     <div className="flex justify-center items-center py-2 relative">
                       <svg className="w-40 h-40" viewBox="0 0 36 36">
-                        {/* Segment 1: Politics 35% */}
+                        {/* Segment 1: News 35% */}
                         <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#ef4444" strokeWidth="4.2" strokeDasharray="35 65" strokeDashoffset="25" />
-                        {/* Segment 2: Movies 45% */}
+                        {/* Segment 2: Film News 45% */}
                         <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#3b82f6" strokeWidth="4.2" strokeDasharray="45 55" strokeDashoffset="90" />
-                        {/* Segment 3: Sports 20% */}
+                        {/* Segment 3: Reviews 20% */}
                         <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#10b981" strokeWidth="4.2" strokeDasharray="20 80" strokeDashoffset="135" />
                       </svg>
 
                       {/* Legend overlay inside center */}
                       <div className="absolute inset-0 flex items-center justify-center flex-col text-[10px] font-bold text-neutral-400">
-                        <span>Movies 45%</span>
+                        <span>Film News 45%</span>
                         <span className="text-[9px] text-neutral-500">Dominant</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 text-[10px] font-bold text-center border-t border-neutral-850 pt-3">
-                      <div className="flex flex-col items-center"><span className="w-2.5 h-2.5 rounded-full bg-blue-500 mb-1"></span> Movies</div>
-                      <div className="flex flex-col items-center"><span className="w-2.5 h-2.5 rounded-full bg-red-500 mb-1"></span> Politics</div>
-                      <div className="flex flex-col items-center"><span className="w-2.5 h-2.5 rounded-full bg-green-500 mb-1"></span> Sports</div>
+                      <div className="flex flex-col items-center"><span className="w-2.5 h-2.5 rounded-full bg-blue-500 mb-1"></span> Film News</div>
+                      <div className="flex flex-col items-center"><span className="w-2.5 h-2.5 rounded-full bg-red-500 mb-1"></span> News</div>
+                      <div className="flex flex-col items-center"><span className="w-2.5 h-2.5 rounded-full bg-green-500 mb-1"></span> Reviews</div>
                     </div>
                   </div>
 
@@ -1416,6 +1423,35 @@ const AdminDashboard = () => {
                           value={setMetaDesc}
                           onChange={(e) => setSetMetaDesc(e.target.value)}
                           className="w-full px-4 py-2.5 bg-neutral-950 border border-neutral-800 text-xs rounded-xl outline-none focus:border-red-650 text-white resize-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Billboard Ad Settings card */}
+                  <div className="bg-neutral-900 border border-neutral-850 rounded-2xl p-5 space-y-4 shadow">
+                    <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5 font-sans">Homepage Billboard Ad Settings</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-neutral-455">Ad Banner Image URL</label>
+                        <input
+                          type="text"
+                          required
+                          value={setBillboardImage}
+                          onChange={(e) => setSetBillboardImage(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-neutral-950 border border-neutral-800 text-xs rounded-xl outline-none focus:border-red-650 text-white"
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-neutral-455">Ad Redirect Destination URL</label>
+                        <input
+                          type="text"
+                          required
+                          value={setBillboardLink}
+                          onChange={(e) => setSetBillboardLink(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-neutral-950 border border-neutral-800 text-xs rounded-xl outline-none focus:border-red-650 text-white"
+                          placeholder="https://..."
                         />
                       </div>
                     </div>

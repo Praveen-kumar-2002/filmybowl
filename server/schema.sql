@@ -102,5 +102,7 @@ CREATE TABLE IF NOT EXISTS settings (
   metaDescription TEXT NOT NULL,
   keywords VARCHAR(500) NOT NULL,
   theme VARCHAR(20) NOT NULL,
+  billboardAdImage VARCHAR(500) DEFAULT 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80',
+  billboardAdLink VARCHAR(500) DEFAULT 'https://images.unsplash.com',
   CONSTRAINT check_settings_row CHECK (id = 1)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -4,13 +4,13 @@ import { NavLink } from 'react-router-dom';
 const Navbar = () => {
   const navItems = [
     { name: 'హోమ్', path: '/' },
-    { name: 'రాజకీయాలు', path: '/category/politics' },
-    { name: 'సినిమాలు', path: '/category/movies' },
-    { name: 'క్రీడలు', path: '/category/sports' },
-    { name: 'వ్యాపారం', path: '/category/business' },
-    { name: 'సాంకేతికత', path: '/category/technology' },
+    { name: 'ఫిల్మ్ న్యూస్', path: '/category/film-news' },
+    { name: 'వార్తలు', path: '/category/news' },
+    { name: 'రివ్యూలు', path: '/category/reviews' },
     { name: 'గ్యాలరీ', path: '/gallery' },
-    { name: 'వీడియోలు', path: '/videos' },
+    { name: 'బాక్స్ ఆఫీస్ వార్తలు', path: '/category/box-office-news' },
+    { name: 'లైవ్ ట్రాకింగ్', path: '/category/live-tracking' },
+    { name: 'పోల్స్', path: '/category/polls' },
     { name: 'సంప్రదించండి', path: '/contact' }
   ];
 

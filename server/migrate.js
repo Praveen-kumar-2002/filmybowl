@@ -101,9 +101,18 @@ async function runMigration() {
 
     // 5b. Categories Table
     const [catRows] = await db.query('SELECT COUNT(*) as count FROM categories');
-    if (catRows[0].count === 0 && mockData.categories && mockData.categories.length > 0) {
-      console.log(`Migrating ${mockData.categories.length} category records...`);
-      for (const c of mockData.categories) {
+    if (catRows[0].count === 0) {
+      const initialCategories = [
+        { id: 'cat-1', key: 'film-news', nameTelugu: 'ఫిల్మ్ న్యూస్', nameEnglish: 'Film News' },
+        { id: 'cat-2', key: 'news', nameTelugu: 'వార్తలు', nameEnglish: 'News' },
+        { id: 'cat-3', key: 'reviews', nameTelugu: 'రివ్యూలు', nameEnglish: 'Reviews' },
+        { id: 'cat-4', key: 'gallery', nameTelugu: 'గ్యాలరీ', nameEnglish: 'Gallery' },
+        { id: 'cat-5', key: 'box-office-news', nameTelugu: 'బాక్స్ ఆఫీస్ వార్తలు', nameEnglish: 'Box Office News' },
+        { id: 'cat-6', key: 'live-tracking', nameTelugu: 'లైవ్ ట్రాకింగ్', nameEnglish: 'Live Tracking' },
+        { id: 'cat-7', key: 'polls', nameTelugu: 'పోల్స్', nameEnglish: 'Polls' }
+      ];
+      console.log(`Migrating ${initialCategories.length} new category records...`);
+      for (const c of initialCategories) {
         await db.query(
           'INSERT INTO categories (id, `key`, nameTelugu, nameEnglish) VALUES (?, ?, ?, ?)',
           [c.id, c.key, c.nameTelugu, c.nameEnglish]
@@ -116,11 +125,20 @@ async function runMigration() {
     if (artRows[0].count === 0 && mockData.articles && mockData.articles.length > 0) {
       console.log(`Migrating ${mockData.articles.length} article records...`);
       for (const a of mockData.articles) {
+        let catKey = a.category;
+        let catTelugu = a.categoryTelugu;
+        if (['politics', 'sports', 'business', 'technology'].includes(catKey)) {
+          catKey = 'news';
+          catTelugu = 'వార్తలు';
+        } else if (catKey === 'movies') {
+          catKey = 'film-news';
+          catTelugu = 'ఫిల్మ్ న్యూస్';
+        }
         // Stringify content array to valid JSON string for MySQL JSON datatype
         const contentJson = Array.isArray(a.content) ? JSON.stringify(a.content) : JSON.stringify([a.content || '']);
         await db.query(
           'INSERT INTO articles (id, title, category, categoryTelugu, author, image, description, content, views, featured, trending, `date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-          [a.id, a.title, a.category, a.categoryTelugu, a.author, a.image, a.description, contentJson, a.views || 0, a.featured ? 1 : 0, a.trending ? 1 : 0, a.date]
+          [a.id, a.title, catKey, catTelugu, a.author, a.image, a.description, contentJson, a.views || 0, a.featured ? 1 : 0, a.trending ? 1 : 0, a.date]
         );
       }
     }
@@ -187,11 +205,25 @@ async function runMigration() {
 
     // 5i. Settings Table (Upsert default row 1)
     const [setRows] = await db.query('SELECT COUNT(*) as count FROM settings WHERE id = 1');
-    if (setRows[0].count === 0 && mockData.settings) {
+    if (setRows[0].count === 0) {
       console.log('Migrating website settings config row...');
-      const s = mockData.settings;
+      const s = mockData.settings || {
+        websiteName: 'Filmybowl',
+        logoUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=150&q=80',
+        faviconUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=32&q=80',
+        contactEmail: 'support@filmybowl.com',
+        phoneNumber: '+91 98765 43210',
+        facebookUrl: 'https://facebook.com/filmybowl',
+        instagramUrl: 'https://instagram.com/filmybowl',
+        youtubeUrl: 'https://youtube.com/filmybowl',
+        twitterUrl: 'https://twitter.com/filmybowl',
+        metaTitle: 'Filmybowl - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
+        metaDescription: 'ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
+        keywords: 'Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
+        theme: 'Dark'
+      };
       await db.query(
-        'INSERT INTO settings (id, websiteName, logoUrl, faviconUrl, contactEmail, phoneNumber, facebookUrl, instagramUrl, youtubeUrl, twitterUrl, metaTitle, metaDescription, keywords, theme) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO settings (id, websiteName, logoUrl, faviconUrl, contactEmail, phoneNumber, facebookUrl, instagramUrl, youtubeUrl, twitterUrl, metaTitle, metaDescription, keywords, theme, billboardAdImage, billboardAdLink) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [
           s.websiteName,
           s.logoUrl,
@@ -205,7 +237,9 @@ async function runMigration() {
           s.metaTitle,
           s.metaDescription,
           s.keywords,
-          s.theme
+          s.theme,
+          s.billboardAdImage || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80',
+          s.billboardAdLink || 'https://images.unsplash.com'
         ]
       );
     }

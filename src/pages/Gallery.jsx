@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { galleryArticles } from '../data/newsData';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiHome, FiChevronRight, FiX, FiChevronLeft, FiImage, FiExternalLink } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { FiHome, FiChevronRight, FiImage } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAdminData } from '../context/AdminDataContext';
 import { translateText } from '../utils/translator';
@@ -11,7 +11,6 @@ const Gallery = () => {
   const { articles: newsArticles, language } = useAdminData();
   const [activeTab, setActiveTab] = useState('Latest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   const ITEMS_PER_PAGE = 9;
 
@@ -24,7 +23,8 @@ const Gallery = () => {
           src: imgUrl,
           title: article.title,
           category: article.categoryTelugu,
-          parentArticleId: article.id
+          parentArticleId: article.id,
+          imageIndex: idx
         });
       });
     }
@@ -63,28 +63,6 @@ const Gallery = () => {
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
-
-  const openLightbox = (index) => {
-    // Map paginated index back to filtered list index
-    const actualIndex = (currentPage - 1) * ITEMS_PER_PAGE + index;
-    setLightboxIndex(actualIndex);
-  };
-
-  const closeLightbox = () => {
-    setLightboxIndex(null);
-  };
-
-  const nextSlide = () => {
-    if (lightboxIndex !== null) {
-      setLightboxIndex((lightboxIndex + 1) % filteredItems.length);
-    }
-  };
-
-  const prevSlide = () => {
-    if (lightboxIndex !== null) {
-      setLightboxIndex((lightboxIndex - 1 + filteredItems.length) % filteredItems.length);
-    }
-  };
 
   const visibleItems = filteredItems.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -145,16 +123,21 @@ const Gallery = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {visibleItems.map((item, index) => (
+              {visibleItems.map((item) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-20px' }}
                   transition={{ duration: 0.3 }}
-                  onClick={() => openLightbox(index)}
-                  className="relative aspect-[3/4.2] rounded-xl overflow-hidden shadow-sm hover:shadow-lg border border-neutral-200/50 dark:border-neutral-850 bg-white dark:bg-neutral-900 group flex flex-col justify-end cursor-pointer"
+                  className="relative aspect-[3/4.2] rounded-xl overflow-hidden shadow-sm hover:shadow-lg border border-neutral-200/50 dark:border-neutral-850 bg-white dark:bg-neutral-900 group flex flex-col justify-end transition-transform duration-300 hover:scale-[1.01]"
                 >
+                  {/* Link wrapper to GalleryDetails */}
+                  <Link
+                    to={`/gallery/${item.parentArticleId}/photo-${item.imageIndex + 1}`}
+                    className="absolute inset-0 z-10"
+                  />
+
                   {/* Photo image */}
                   <img
                     src={item.src}
@@ -214,79 +197,6 @@ const Gallery = () => {
         </div>
 
       </div>
-
-      {/* Fullscreen Lightbox Modal Overlay using React Portals */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/95 z-[99999] flex items-center justify-center p-4 select-none backdrop-blur-sm"
-          >
-            {/* Click outside to close */}
-            <div className="absolute inset-0 cursor-pointer" onClick={closeLightbox}></div>
-
-            {/* Close Button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 text-white hover:text-red-500 p-2.5 text-2xl z-[999999] bg-black/40 rounded-full"
-              aria-label="Close Lightbox"
-            >
-              <FiX />
-            </button>
-
-            {/* Left navigation arrow */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-red-500 p-3 text-3xl bg-black/50 hover:bg-black/80 rounded-full cursor-pointer z-[999999]"
-              aria-label="Previous Slide"
-            >
-              <FiChevronLeft />
-            </button>
-
-            {/* Slide display */}
-            <div className="max-w-4xl max-h-[85vh] flex flex-col items-center justify-center gap-4 text-white px-8 z-50">
-              <motion.img
-                key={lightboxIndex}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                src={filteredItems[lightboxIndex].src}
-                alt={filteredItems[lightboxIndex].title}
-                className="max-w-full max-h-[72vh] object-contain rounded-lg shadow-2xl border border-white/5"
-              />
-
-              <div className="text-center space-y-1.5">
-                <span className="text-[10px] bg-red-655 font-extrabold px-2.5 py-0.5 rounded uppercase tracking-wider">
-                  {translateText(filteredItems[lightboxIndex].category, language)}
-                </span>
-                <p className="text-sm md:text-base font-bold line-clamp-2">
-                  {translateText(filteredItems[lightboxIndex].title, language)}
-                </p>
-                <Link
-                  to={`/news/${filteredItems[lightboxIndex].parentArticleId}`}
-                  onClick={closeLightbox}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:text-red-400 underline mt-1 cursor-pointer"
-                >
-                  <FiExternalLink />
-                  <span>{language === 'te' ? 'పూర్తి వార్త కథనం చదవండి' : 'Read Full Story Article'}</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Right navigation arrow */}
-            <button
-              onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-red-500 p-3 text-3xl bg-black/50 hover:bg-black/80 rounded-full cursor-pointer z-[999999]"
-              aria-label="Next Slide"
-            >
-              <FiChevronRight />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </div>
   );

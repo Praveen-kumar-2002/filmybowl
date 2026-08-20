@@ -111,11 +111,11 @@ const Header = () => {
 
           {/* Socials & Language toggle */}
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2.5">
-              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="Facebook"><FiFacebook /></a>
-              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="Twitter"><FiTwitter /></a>
-              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="Instagram"><FiInstagram /></a>
-              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="YouTube"><FiYoutube /></a>
+            <div className="flex items-center gap-3">
+              <a href="#" className="w-12 h-12 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-xl border border-neutral-350/20 dark:border-neutral-750" aria-label="Facebook"><FiFacebook /></a>
+              <a href="#" className="w-12 h-12 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-xl border border-neutral-350/20 dark:border-neutral-750" aria-label="Twitter"><FiTwitter /></a>
+              <a href="#" className="w-12 h-12 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-xl border border-neutral-350/20 dark:border-neutral-750" aria-label="Instagram"><FiInstagram /></a>
+              <a href="#" className="w-12 h-12 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-xl border border-neutral-350/20 dark:border-neutral-750" aria-label="YouTube"><FiYoutube /></a>
             </div>
             
             <div className="h-3 w-px bg-neutral-200 dark:bg-neutral-800"></div>
@@ -252,11 +252,19 @@ const Header = () => {
             </div>
 
             <div className="pt-6 border-t border-neutral-100 dark:border-neutral-900 text-center text-xs text-neutral-400 space-y-4">
-              <div className="flex items-center justify-center gap-4 text-lg">
-                <a href="#" className="hover:text-red-600"><FiFacebook /></a>
-                <a href="#" className="hover:text-red-600"><FiTwitter /></a>
-                <a href="#" className="hover:text-red-600"><FiInstagram /></a>
-                <a href="#" className="hover:text-red-600"><FiYoutube /></a>
+              <div className="flex items-center justify-center gap-3.5">
+                <a href="#" className="w-12 h-12 rounded-full border border-neutral-250 dark:border-neutral-800 bg-neutral-100/60 dark:bg-neutral-900 hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-md text-xl" aria-label="Facebook">
+                  <FiFacebook />
+                </a>
+                <a href="#" className="w-12 h-12 rounded-full border border-neutral-250 dark:border-neutral-800 bg-neutral-100/60 dark:bg-neutral-900 hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-md text-xl" aria-label="Twitter">
+                  <FiTwitter />
+                </a>
+                <a href="#" className="w-12 h-12 rounded-full border border-neutral-250 dark:border-neutral-800 bg-neutral-100/60 dark:bg-neutral-900 hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-md text-xl" aria-label="Instagram">
+                  <FiInstagram />
+                </a>
+                <a href="#" className="w-12 h-12 rounded-full border border-neutral-250 dark:border-neutral-800 bg-neutral-100/60 dark:bg-neutral-900 hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-md text-xl" aria-label="YouTube">
+                  <FiYoutube />
+                </a>
               </div>
               <p>&copy; {new Date().getFullYear()} Filmybowl</p>
             </div>

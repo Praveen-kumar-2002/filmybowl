@@ -2,8 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NewsCard from './NewsCard';
 import { FiChevronRight, FiGrid } from 'react-icons/fi';
+import { useAdminData } from '../context/AdminDataContext';
+import { translateText } from '../utils/translator';
 
 const CategoryBlock = ({ categoryKey, categoryTelugu, articles = [] }) => {
+  const { language } = useAdminData();
+
   // Filter articles matching this category
   const categoryArticles = articles
     .filter((a) => a.category === categoryKey)
@@ -23,7 +27,7 @@ const CategoryBlock = ({ categoryKey, categoryTelugu, articles = [] }) => {
           {/* Accent decoration */}
           <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
           <h2 className="text-xl md:text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-            {categoryTelugu}
+            {translateText(categoryTelugu, language)}
           </h2>
         </div>
         
@@ -31,7 +35,7 @@ const CategoryBlock = ({ categoryKey, categoryTelugu, articles = [] }) => {
           to={`/category/${categoryKey}`}
           className="inline-flex items-center gap-1 text-xs md:text-sm font-bold text-red-600 dark:text-red-500 hover:text-red-700 transition-colors"
         >
-          <span>అన్నీ చూడండి</span>
+          <span>{translateText('అన్నీ చూడండి', language)}</span>
           <FiChevronRight className="text-base" />
         </Link>
       </div>

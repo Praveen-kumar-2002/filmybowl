@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
 import { FiClock, FiEye, FiArrowRight } from 'react-icons/fi';
+import { useAdminData } from '../context/AdminDataContext';
+import { translateText } from '../utils/translator';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -11,6 +13,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 
 const HeroSlider = ({ articles = [] }) => {
+  const { language } = useAdminData();
   const featuredArticles = articles.filter(a => a.featured).slice(0, 5);
 
   if (featuredArticles.length === 0) return null;
@@ -61,20 +64,20 @@ const HeroSlider = ({ articles = [] }) => {
                     to={`/category/${article.category}`}
                     className="bg-red-600 hover:bg-red-700 text-white text-[11px] md:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md shadow-lg transition-colors inline-block"
                   >
-                    {article.categoryTelugu}
+                    {translateText(article.categoryTelugu, language)}
                   </Link>
                 </div>
 
                 {/* Title */}
                 <Link to={`/news/${article.id}`}>
                   <h2 className="text-xl md:text-4xl font-extrabold tracking-tight leading-tight hover:text-red-400 transition-colors duration-200 line-clamp-2 md:line-clamp-3 mb-4">
-                    {article.title}
+                    {translateText(article.title, language)}
                   </h2>
                 </Link>
 
                 {/* Description - hidden on small mobile */}
                 <p className="hidden md:block text-neutral-250 text-sm md:text-base leading-relaxed line-clamp-2 mb-6 opacity-90">
-                  {article.description}
+                  {translateText(article.description, language)}
                 </p>
 
                 {/* Metadata & CTA */}
@@ -84,17 +87,17 @@ const HeroSlider = ({ articles = [] }) => {
                       <FiClock /> {formattedDate}
                     </span>
                     <span className="flex items-center gap-1">
-                      <FiEye /> {article.views.toLocaleString()} వీక్షణలు
+                      <FiEye /> {article.views.toLocaleString()} {translateText('వీక్షణలు', language)}
                     </span>
                     <span className="hidden sm:inline-block">•</span>
-                    <span className="hidden sm:inline-block">రచయిత: {article.author}</span>
+                    <span className="hidden sm:inline-block">{translateText('రచన:', language)} {article.author}</span>
                   </div>
 
                   <Link
                     to={`/news/${article.id}`}
-                    className="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold hover:bg-red-600 hover:text-white px-5 py-2.5 rounded-lg text-xs md:text-sm shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold hover:bg-red-600 hover:text-white px-5 py-2.5 rounded-lg text-xs md:text-sm shadow-md transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                   >
-                    <span>చదవండి</span>
+                    <span>{translateText('మరింత చదవండి', language)}</span>
                     <FiArrowRight />
                   </Link>
                 </div>

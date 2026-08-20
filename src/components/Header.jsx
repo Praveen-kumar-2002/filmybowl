@@ -14,10 +14,12 @@ import {
   FiClock
 } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { newsArticles } from '../data/newsData';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage } = useAdminData();
   const [dateTime, setDateTime] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -107,22 +109,25 @@ const Header = () => {
             <span>{dateTime}</span>
           </div>
 
-          {/* Socials & Language placeholder */}
+          {/* Socials & Language toggle */}
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
-              <a href="#" className="hover:text-red-600 transition-colors"><FiFacebook /></a>
-              <a href="#" className="hover:text-red-600 transition-colors"><FiTwitter /></a>
-              <a href="#" className="hover:text-red-600 transition-colors"><FiInstagram /></a>
-              <a href="#" className="hover:text-red-600 transition-colors"><FiYoutube /></a>
+            <div className="flex items-center gap-2.5">
+              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="Facebook"><FiFacebook /></a>
+              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="Twitter"><FiTwitter /></a>
+              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="Instagram"><FiInstagram /></a>
+              <a href="#" className="w-8 h-8 rounded-full bg-neutral-200/50 dark:bg-neutral-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-655 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm text-sm border border-neutral-350/20 dark:border-neutral-750" aria-label="YouTube"><FiYoutube /></a>
             </div>
             
             <div className="h-3 w-px bg-neutral-200 dark:bg-neutral-800"></div>
 
             {/* Language switch */}
-            <div className="flex items-center gap-1.5 cursor-pointer hover:text-red-600 select-none">
-              <FiGlobe />
-              <span className="font-semibold">Telugu (తెలుగు)</span>
-            </div>
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 cursor-pointer hover:text-red-655 select-none bg-transparent border-none outline-none text-xs font-bold text-neutral-500 dark:text-neutral-450 transition-colors"
+            >
+              <FiGlobe className="text-sm text-red-600" />
+              <span>{language === 'te' ? 'English (ఇంగ్లీష్)' : 'తెలుగు (Telugu)'}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -202,10 +207,20 @@ const Header = () => {
             <FiSearch className="text-xl" />
           </Link>
 
+          {/* Language Toggle (Mobile responsive) */}
+          <button
+            onClick={toggleLanguage}
+            className="px-2.5 py-1.5 rounded-lg border border-neutral-250 dark:border-neutral-800 text-[10px] font-black text-neutral-600 dark:text-neutral-350 hover:text-red-655 cursor-pointer bg-neutral-100/60 dark:bg-neutral-900 transition-colors flex items-center gap-1 select-none"
+            aria-label="Toggle Language"
+          >
+            <FiGlobe className="text-[11px] text-red-600" />
+            <span>{language === 'te' ? 'EN' : 'తెలుగు'}</span>
+          </button>
+
           {/* Theme switch button */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-600 dark:text-neutral-300 hover:text-red-600 transition-all duration-300"
+            className="p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-600 dark:text-neutral-300 hover:text-red-600 transition-all duration-300 cursor-pointer"
             aria-label="Toggle Theme Mode"
           >
             {theme === 'dark' ? <FiSun className="text-lg" /> : <FiMoon className="text-lg" />}

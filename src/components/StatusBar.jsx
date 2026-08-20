@@ -3,8 +3,11 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiChevronLeft, FiChevronRight, FiLink } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { useAdminData } from '../context/AdminDataContext';
+import { translateText } from '../utils/translator';
 
 const StatusBar = () => {
+  const { language } = useAdminData();
   const [activeStoryIdx, setActiveStoryIdx] = useState(null);
   const scrollContainerRef = useRef(null);
 
@@ -224,8 +227,8 @@ const StatusBar = () => {
                     />
                   </div>
                   <div className="flex flex-col text-white">
-                    <span className="text-xs font-bold">{celebrityStories[activeStoryIdx].name}</span>
-                    <span className="text-[9px] text-neutral-350">Active now</span>
+                    <span className="text-xs font-bold">{translateText(celebrityStories[activeStoryIdx].name, language)}</span>
+                    <span className="text-[9px] text-neutral-350">{translateText('Active now', language)}</span>
                   </div>
                 </div>
               </div>
@@ -241,7 +244,7 @@ const StatusBar = () => {
             {/* Story text caption & Call to action */}
             <div className="z-20 w-full space-y-4 pt-16">
               <p className="text-white text-sm font-semibold leading-relaxed drop-shadow-md text-center px-2">
-                {celebrityStories[activeStoryIdx].caption}
+                {translateText(celebrityStories[activeStoryIdx].caption, language)}
               </p>
 
               <div className="w-full pt-3 border-t border-white/10 flex items-center justify-center">
@@ -251,7 +254,7 @@ const StatusBar = () => {
                   className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-650 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
                 >
                   <FiLink />
-                  <span>వార్తలు చూడండి (View News)</span>
+                  <span>{language === 'te' ? 'వార్తలు చూడండి' : 'View News'}</span>
                 </Link>
               </div>
             </div>

@@ -8,11 +8,12 @@ import PopUpAd from '../components/PopUpAd';
 import CornerAd from '../components/CornerAd';
 import HomepageBillboardAd from '../components/HomepageBillboardAd';
 import { useAdminData } from '../context/AdminDataContext';
+import { translateText } from '../utils/translator';
 import { FiMail, FiVideo, FiImage } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const { articles: newsArticles } = useAdminData();
+  const { articles: newsArticles, language } = useAdminData();
   return (
     <div className="space-y-6">
       
@@ -119,7 +120,7 @@ const Home = () => {
               to="/gallery"
               className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-950 dark:hover:bg-neutral-900 text-neutral-800 dark:text-neutral-250 text-center font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all"
             >
-              <span>ఫోటో గ్యాలరీకి వెళ్ళండి</span>
+              <span>{language === 'te' ? 'ఫోటో గ్యాలరీకి వెళ్ళండి' : 'Go to Photo Gallery'}</span>
             </Link>
           </div>
 
@@ -127,23 +128,23 @@ const Home = () => {
           <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-850 rounded-2xl p-6 shadow-sm">
             <div className="flex items-center gap-2 mb-3 text-neutral-950 dark:text-neutral-50 font-bold text-sm">
               <FiMail className="text-red-650 text-lg" />
-              <span>వార్తా లేఖకు సబ్‌స్క్రైబ్ అవ్వండి</span>
+              <span>{language === 'te' ? 'వార్తా లేఖకు సబ్‌స్క్రైబ్ అవ్వండి' : 'Subscribe to Newsletter'}</span>
             </div>
             <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-4 leading-relaxed">
-              రోజూ తాజా వార్తలను మీ ఈమెయిల్ లో నేరుగా పొందడానికి మీ వివరాలను ఇక్కడ నమోదు చేయండి.
+              {language === 'te' ? 'రోజూ తాజా వార్తలను మీ ఈమెయిల్ లో నేరుగా పొందడానికి మీ వివరాలను ఇక్కడ నమోదు చేయండి.' : 'Enter your email to receive daily latest updates directly in your inbox.'}
             </p>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
               <input
                 type="email"
-                placeholder="మీ ఈమెయిల్ చిరునామా"
+                placeholder={language === 'te' ? 'మీ ఈమెయిల్ చిరునామా' : 'Your Email Address'}
                 required
                 className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 focus:border-red-650 rounded-xl outline-none"
               />
               <button
                 type="submit"
-                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-colors"
+                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
               >
-                సబ్‌స్క్రైబ్
+                {language === 'te' ? 'సబ్‌స్క్రైబ్' : 'Subscribe'}
               </button>
             </form>
           </div>

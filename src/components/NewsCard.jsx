@@ -2,12 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiClock, FiEye, FiArrowRight } from 'react-icons/fi';
+import { useAdminData } from '../context/AdminDataContext';
+import { translateText } from '../utils/translator';
 
 const NewsCard = ({ article, layout = 'grid' }) => {
   const { id, title, description, category, categoryTelugu, image, date, views } = article;
+  const { language } = useAdminData();
 
   // Format date to readable string
-  const formattedDate = new Date(date).toLocaleDateString('te-IN', {
+  const formattedDate = new Date(date).toLocaleDateString(language === 'te' ? 'te-IN' : 'en-US', {
     day: 'numeric',
     month: 'short',
     year: 'numeric'
@@ -34,7 +37,7 @@ const NewsCard = ({ article, layout = 'grid' }) => {
             to={`/category/${category}`}
             className="absolute top-2 left-2 bg-red-600 text-white font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded shadow-sm hover:bg-red-700 transition-colors"
           >
-            {categoryTelugu}
+            {translateText(categoryTelugu, language)}
           </Link>
         </div>
 
@@ -46,27 +49,27 @@ const NewsCard = ({ article, layout = 'grid' }) => {
                 <FiClock /> {formattedDate}
               </span>
               <span className="flex items-center gap-1">
-                <FiEye /> {views.toLocaleString()}
+                <FiEye /> {views.toLocaleString()} {translateText('వీక్షణలు', language)}
               </span>
             </div>
             
             <Link to={`/news/${id}`}>
               <h3 className="text-base font-bold text-neutral-950 dark:text-neutral-50 leading-snug hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 line-clamp-2 mb-2">
-                {title}
+                {translateText(title, language)}
               </h3>
             </Link>
             
             <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed line-clamp-2 md:line-clamp-3">
-              {description}
+              {translateText(description, language)}
             </p>
           </div>
 
           <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-end">
             <Link 
               to={`/news/${id}`}
-              className="inline-flex items-center gap-1 text-red-600 dark:text-red-500 text-xs font-bold hover:gap-2 transition-all"
+              className="inline-flex items-center gap-1 text-red-600 dark:text-red-505 text-xs font-bold hover:gap-2 transition-all cursor-pointer"
             >
-              <span>పూర్తి వివరాలు</span>
+              <span>{translateText('మరింత చదవండి', language)}</span>
               <FiArrowRight />
             </Link>
           </div>
@@ -97,7 +100,7 @@ const NewsCard = ({ article, layout = 'grid' }) => {
           to={`/category/${category}`}
           className="absolute top-3 left-3 bg-red-600 text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm hover:bg-red-700 transition-colors z-10"
         >
-          {categoryTelugu}
+          {translateText(categoryTelugu, language)}
         </Link>
       </div>
 
@@ -110,20 +113,20 @@ const NewsCard = ({ article, layout = 'grid' }) => {
               <FiClock /> {formattedDate}
             </span>
             <span className="flex items-center gap-1">
-              <FiEye /> {views.toLocaleString()}
+              <FiEye /> {views.toLocaleString()} {translateText('వీక్షణలు', language)}
             </span>
           </div>
 
           {/* Title */}
           <Link to={`/news/${id}`}>
             <h3 className="text-base md:text-lg font-bold text-neutral-900 dark:text-neutral-50 leading-snug hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 line-clamp-2 mb-2">
-              {title}
+              {translateText(title, language)}
             </h3>
           </Link>
 
           {/* Short description */}
           <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm leading-relaxed line-clamp-3">
-            {description}
+            {translateText(description, language)}
           </p>
         </div>
 
@@ -131,9 +134,9 @@ const NewsCard = ({ article, layout = 'grid' }) => {
         <div className="mt-4 pt-3 border-t border-neutral-150 dark:border-neutral-800 flex items-center justify-between">
           <Link
             to={`/news/${id}`}
-            className="inline-flex items-center gap-1 text-red-600 dark:text-red-500 text-xs md:text-sm font-bold hover:gap-2 transition-all group-hover:text-red-700"
+            className="inline-flex items-center gap-1 text-red-600 dark:text-red-500 text-xs md:text-sm font-bold hover:gap-2 transition-all group-hover:text-red-700 cursor-pointer"
           >
-            <span>చదవండి</span>
+            <span>{translateText('మరింత చదవండి', language)}</span>
             <FiArrowRight />
           </Link>
         </div>

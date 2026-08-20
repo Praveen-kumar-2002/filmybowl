@@ -111,6 +111,17 @@ export const AdminDataProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : defaultSettings;
   });
 
+  // Language State (te / en)
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem('filmybowl_language') || 'te';
+  });
+
+  const toggleLanguage = () => {
+    const newLang = language === 'te' ? 'en' : 'te';
+    setLanguage(newLang);
+    localStorage.setItem('filmybowl_language', newLang);
+  };
+
   // Helper auth headers
   const getAuthHeaders = () => {
     const token = sessionStorage.getItem('filmybowl_admin_auth_token');
@@ -654,6 +665,9 @@ export const AdminDataProvider = ({ children }) => {
   return (
     <AdminDataContext.Provider
       value={{
+        language,
+        setLanguage,
+        toggleLanguage,
         isOnline,
         articles,
         categories,

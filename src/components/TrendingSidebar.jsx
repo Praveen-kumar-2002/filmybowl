@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrendingUp, FiEye, FiClock } from 'react-icons/fi';
+import { useAdminData } from '../context/AdminDataContext';
+import { translateText } from '../utils/translator';
 
 const TrendingSidebar = ({ articles = [] }) => {
+  const { language } = useAdminData();
   const [activeTab, setActiveTab] = useState('popular'); // popular or recent
 
   // Get articles sorted by views
@@ -23,7 +26,7 @@ const TrendingSidebar = ({ articles = [] }) => {
       <div className="flex items-center justify-between pb-4 border-b border-neutral-100 dark:border-neutral-800 mb-5">
         <div className="flex items-center gap-1.5 font-bold text-neutral-900 dark:text-white text-base">
           <FiTrendingUp className="text-red-600 text-lg animate-bounce" />
-          <span>ట్రెండింగ్ వార్తలు</span>
+          <span>{translateText('ట్రెండింగ్ వార్తలు', language)}</span>
         </div>
       </div>
 
@@ -31,30 +34,30 @@ const TrendingSidebar = ({ articles = [] }) => {
       <div className="flex gap-2 p-1 bg-neutral-50 dark:bg-neutral-950 border border-neutral-100 dark:border-neutral-850 rounded-xl mb-5 text-xs font-bold">
         <button
           onClick={() => setActiveTab('popular')}
-          className={`flex-1 py-2 text-center rounded-lg transition-all duration-300 ${
+          className={`flex-1 py-2 text-center rounded-lg transition-all duration-300 cursor-pointer ${
             activeTab === 'popular'
               ? 'bg-white dark:bg-neutral-800 text-red-600 dark:text-red-500 shadow-sm'
               : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-855'
           }`}
         >
-          అత్యధిక వీక్షణలు
+          {language === 'te' ? 'అత్యధిక వీక్షణలు' : 'Popular'}
         </button>
         <button
           onClick={() => setActiveTab('recent')}
-          className={`flex-1 py-2 text-center rounded-lg transition-all duration-300 ${
+          className={`flex-1 py-2 text-center rounded-lg transition-all duration-300 cursor-pointer ${
             activeTab === 'recent'
               ? 'bg-white dark:bg-neutral-800 text-red-600 dark:text-red-500 shadow-sm'
               : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-855'
           }`}
         >
-          తాజా అప్‌డేట్స్
+          {translateText('తాజా అప్‌డేట్స్', language)}
         </button>
       </div>
 
       {/* List */}
       <div className="space-y-4">
         {displayArticles.map((article, index) => {
-          const formattedDate = new Date(article.date).toLocaleDateString('te-IN', {
+          const formattedDate = new Date(article.date).toLocaleDateString(language === 'te' ? 'te-IN' : 'en-US', {
             day: 'numeric',
             month: 'short'
           });
@@ -79,11 +82,11 @@ const TrendingSidebar = ({ articles = [] }) => {
                   to={`/news/${article.id}`}
                   className="text-xs md:text-sm font-bold text-neutral-900 dark:text-neutral-200 leading-snug line-clamp-2 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-150"
                 >
-                  {article.title}
+                  {translateText(article.title, language)}
                 </Link>
                 <div className="flex items-center gap-3 text-[10px] text-neutral-400 dark:text-neutral-500">
                   <span className="bg-red-100 dark:bg-red-950/50 text-red-700 dark:text-red-400 font-extrabold px-1.5 py-0.5 rounded text-[9px] uppercase">
-                    {article.categoryTelugu}
+                    {translateText(article.categoryTelugu, language)}
                   </span>
                   <span className="flex items-center gap-0.5"><FiClock /> {formattedDate}</span>
                   <span className="flex items-center gap-0.5"><FiEye /> {article.views.toLocaleString()}</span>

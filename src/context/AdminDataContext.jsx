@@ -11,14 +11,26 @@ export const AdminDataProvider = ({ children }) => {
 
   // 1. Articles State
   const [articles, setArticles] = useState(() => {
+    // Clear legacy articles localStorage once to refresh classifications
+    if (localStorage.getItem('filmybowl_articles') && !localStorage.getItem('cineveduka_refreshed_v3')) {
+      localStorage.removeItem('filmybowl_articles');
+      localStorage.setItem('cineveduka_refreshed_v3', 'true');
+    }
     const saved = localStorage.getItem('filmybowl_articles');
     const list = saved ? JSON.parse(saved) : newsArticles;
     return list.map(art => {
+      const titleLower = art.title.toLowerCase();
+      if (art.category === 'movies') {
+        if (titleLower.includes('రివ్యూ') || titleLower.includes('review')) {
+          return { ...art, category: 'reviews', categoryTelugu: 'రివ్యూలు' };
+        }
+        if (titleLower.includes('బాక్స్ ఆఫీస్') || titleLower.includes('కలెక్షన్') || titleLower.includes('box office') || titleLower.includes('boxoffice') || titleLower.includes('కలెక్షన్లు')) {
+          return { ...art, category: 'box-office-news', categoryTelugu: 'బాక్స్ ఆఫీస్ వార్తలు' };
+        }
+        return { ...art, category: 'film-news', categoryTelugu: 'ఫిల్మ్ న్యూస్' };
+      }
       if (['politics', 'sports', 'business', 'technology'].includes(art.category)) {
         return { ...art, category: 'news', categoryTelugu: 'వార్తలు' };
-      }
-      if (art.category === 'movies') {
-        return { ...art, category: 'film-news', categoryTelugu: 'ఫిల్మ్ న్యూస్' };
       }
       return art;
     });

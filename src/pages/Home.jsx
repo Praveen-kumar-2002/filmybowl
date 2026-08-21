@@ -9,11 +9,21 @@ import CornerAd from '../components/CornerAd';
 import HomepageBillboardAd from '../components/HomepageBillboardAd';
 import { useAdminData } from '../context/AdminDataContext';
 import { translateText } from '../utils/translator';
-import { FiMail, FiVideo, FiImage } from 'react-icons/fi';
+import { FiMail, FiVideo, FiImage, FiChevronRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { galleryArticles } from '../data/newsData';
 
 const Home = () => {
   const { articles: newsArticles, language } = useAdminData();
+
+  // Create home page gallery items (portrait cards)
+  const homeGalleryItems = galleryArticles.slice(0, 3).map((art, idx) => ({
+    id: `${art.id}-0`,
+    src: art.gallery[0] || art.image,
+    title: art.title,
+    category: art.categoryTelugu,
+    parentArticleId: art.id
+  }));
   return (
     <div className="space-y-6">
       
@@ -49,36 +59,143 @@ const Home = () => {
             articles={newsArticles} 
           />
 
-          {/* Reviews Category Block */}
-          <CategoryBlock 
-            categoryKey="reviews" 
-            categoryTelugu="రివ్యూలు (Reviews)" 
-            articles={newsArticles} 
-          />
+          {/* Inline Advertisement */}
+          <AdBanner slotId="mid-home-news-ads" size="inline" />
+
+          {/* Box Office Section */}
+          <section className="my-10 w-full">
+            <div className="flex items-center justify-between border-b-2 border-neutral-100 dark:border-neutral-850 pb-3 mb-6 relative">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
+                <h2 className="text-xl md:text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+                  {language === 'te' ? 'బాక్స్ ఆఫీస్ (Box Office)' : 'Box Office'}
+                </h2>
+              </div>
+              <Link
+                to="/category/box-office-news"
+                className="inline-flex items-center gap-1 text-xs md:text-sm font-bold text-red-600 dark:text-red-505 hover:text-red-700 transition-colors"
+              >
+                <span>{translateText('అన్నీ చూడండి', language)}</span>
+                <FiChevronRight className="text-base" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {newsArticles
+                .filter(art => art.category === 'box-office-news')
+                .slice(0, 3)
+                .map(art => (
+                  <div key={art.id} className="flex flex-col bg-white dark:bg-neutral-900 border border-neutral-150/60 dark:border-neutral-850 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group relative">
+                    <Link to={`/news/${art.id}`} className="absolute inset-0 z-10" />
+                    <div className="aspect-[16/10] overflow-hidden relative">
+                      <img src={art.image} alt={art.title} className="w-full h-full object-cover transform duration-500 group-hover:scale-105" />
+                    </div>
+                    <div className="p-4 flex-grow flex flex-col justify-between">
+                      <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white line-clamp-2 leading-snug group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
+                        {translateText(art.title, language)}
+                      </h3>
+                      <p className="text-[10px] text-neutral-450 mt-2">
+                        {new Date(art.date).toLocaleDateString(language === 'te' ? 'te-IN' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </section>
 
           {/* Inline Advertisement */}
           <AdBanner slotId="mid-home-reviews-ads" size="inline" />
 
-          {/* Box Office News Category Block */}
-          <CategoryBlock 
-            categoryKey="box-office-news" 
-            categoryTelugu="బాక్స్ ఆఫీస్ వార్తలు (Box Office News)" 
-            articles={newsArticles} 
-          />
+          {/* Reviews Section */}
+          <section className="my-10 w-full">
+            <div className="flex items-center justify-between border-b-2 border-neutral-100 dark:border-neutral-850 pb-3 mb-6 relative">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
+                <h2 className="text-xl md:text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+                  {language === 'te' ? 'సినిమా రివ్యూలు (Reviews)' : 'Reviews'}
+                </h2>
+              </div>
+              <Link
+                to="/category/reviews"
+                className="inline-flex items-center gap-1 text-xs md:text-sm font-bold text-red-600 dark:text-red-505 hover:text-red-700 transition-colors"
+              >
+                <span>{translateText('అన్నీ చూడండి', language)}</span>
+                <FiChevronRight className="text-base" />
+              </Link>
+            </div>
 
-          {/* Live Tracking Category Block */}
-          <CategoryBlock 
-            categoryKey="live-tracking" 
-            categoryTelugu="లైవ్ ట్రాకింగ్ (Live Tracking)" 
-            articles={newsArticles} 
-          />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {newsArticles
+                .filter(art => art.category === 'reviews')
+                .slice(0, 3)
+                .map(art => {
+                  const rating = (art.id.charCodeAt(art.id.length - 1) % 3) / 2 + 3.5;
+                  const stars = Array.from({ length: 5 }, (_, i) => i < Math.floor(rating));
+                  
+                  return (
+                    <div key={art.id} className="flex flex-col bg-white dark:bg-neutral-900 border border-neutral-150/60 dark:border-neutral-850 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group relative">
+                      <Link to={`/news/${art.id}`} className="absolute inset-0 z-10" />
+                      <div className="aspect-[2/3] w-full overflow-hidden relative bg-neutral-950">
+                        <img src={art.image} alt={art.title} className="w-full h-full object-cover transform duration-500 group-hover:scale-105" />
+                        <div className="absolute top-3 right-3 bg-black/80 text-white text-[9px] font-black px-2 py-0.5 rounded-md flex items-center gap-1 border border-white/10 shadow z-20">
+                          <span className="text-yellow-500">★</span>
+                          <span>{rating.toFixed(1)} / 5</span>
+                        </div>
+                      </div>
+                      <div className="p-4 flex-grow flex flex-col justify-between space-y-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-0.5 text-xs text-yellow-500">
+                            {stars.map((filled, i) => (
+                              <span key={i}>{filled ? '★' : '☆'}</span>
+                            ))}
+                          </div>
+                          <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white line-clamp-2 leading-snug group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
+                            {translateText(art.title, language)}
+                          </h3>
+                        </div>
+                        <p className="text-neutral-500 text-[11px] line-clamp-2 leading-relaxed">
+                          {translateText(art.description, language)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </section>
 
-          {/* Polls Category Block */}
-          <CategoryBlock 
-            categoryKey="polls" 
-            categoryTelugu="పోల్స్ (Polls)" 
-            articles={newsArticles} 
-          />
+          {/* Photo Gallery Section */}
+          <section className="my-10 w-full">
+            <div className="flex items-center justify-between border-b-2 border-neutral-100 dark:border-neutral-850 pb-3 mb-6 relative">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
+                <h2 className="text-xl md:text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+                  {language === 'te' ? 'చిత్ర మాలిక (Gallery)' : 'Gallery'}
+                </h2>
+              </div>
+              <Link
+                to="/gallery"
+                className="inline-flex items-center gap-1 text-xs md:text-sm font-bold text-red-600 dark:text-red-505 hover:text-red-700 transition-colors"
+              >
+                <span>{translateText('అన్నీ చూడండి', language)}</span>
+                <FiChevronRight className="text-base" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {homeGalleryItems.map(item => (
+                <div key={item.id} className="relative aspect-[3/4.2] rounded-xl overflow-hidden shadow-sm hover:shadow-lg border border-neutral-200/50 dark:border-neutral-850 bg-white dark:bg-neutral-900 group flex flex-col justify-end transition-transform duration-300 hover:scale-[1.01] cursor-pointer">
+                  <Link to={`/gallery/${item.parentArticleId}/photo-1`} className="absolute inset-0 z-10" />
+                  <img src={item.src} alt={item.title} className="absolute inset-0 w-full h-full object-cover transform duration-500 group-hover:scale-105" loading="lazy" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-10"></div>
+                  <div className="absolute bottom-0 inset-x-0 bg-red-600 hover:bg-red-750 text-white text-center py-2.5 px-3 flex items-center justify-center transition-colors duration-300 select-none z-20">
+                    <p className="text-white text-[11px] md:text-xs font-bold leading-tight font-sans line-clamp-2">
+                      {translateText(item.title, language)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
         </div>
 

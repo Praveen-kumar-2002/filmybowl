@@ -12,7 +12,7 @@ export const AdminDataProvider = ({ children }) => {
   // 1. Articles State
   const [articles, setArticles] = useState(() => {
     // Clear legacy articles localStorage once to refresh classifications and articles
-    if (!localStorage.getItem('cineveduka_refreshed_v5')) {
+    if (!localStorage.getItem('cineveduka_refreshed_v6')) {
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -21,7 +21,7 @@ export const AdminDataProvider = ({ children }) => {
         }
       }
       keysToRemove.forEach(key => localStorage.removeItem(key));
-      localStorage.setItem('cineveduka_refreshed_v5', 'true');
+      localStorage.setItem('cineveduka_refreshed_v6', 'true');
     }
     const saved = localStorage.getItem('filmybowl_articles');
     const list = saved ? JSON.parse(saved) : newsArticles;

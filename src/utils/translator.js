@@ -161,5 +161,5 @@ export const translateText = (text, lang = 'te') => {
     .replace(/తదుపరి సినిమా ప్రమోషన్స్ ప్రారంభం!/g, 'Next movie promotions started!')
     .replace(/ట్రెడిషనల్ చీర కట్టులో మెరిసిపోతున్న కీర్తి సురేష్/g, 'Keerthy Suresh looking gorgeous in a traditional saree')
     .replace(/అందరికీ నమస్కారం! లవ్ యు ఆల్/g, 'Hello everyone! Love you all')
-    .replace(/^[అ-హ\s,.:!🎬📸✨☕💃🌟🔥😎👨‍👩‍👧❤️💪🔥🏖️🍹🎤✨🌸🥻🫶]+$/, 'FILMYBOWL Exclusive Highlight Update');
+    .replace(/^[అ-హ\s,.:!🎬📸✨☕💃🌟🔥😎👨‍👩‍👧❤️💪🔥🏖️🍹🎤✨🌸🥻🫶]+$/, 'Cineveduka Exclusive Highlight Update');
 };

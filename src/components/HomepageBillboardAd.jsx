@@ -51,10 +51,12 @@ const HomepageBillboardAd = () => {
           {/* Header Bar */}
           <div className="w-full bg-white border-b border-neutral-200 h-14 flex items-center justify-between px-4 md:px-8 shrink-0">
             {/* Left: Branding Logo */}
-            <div className="flex items-center">
-              <span className="text-lg md:text-xl font-black text-neutral-900 tracking-wider uppercase font-mono">
-                FILMY<span className="text-red-655">BOWL</span><span className="text-xs font-bold text-neutral-500 font-sans">.com</span>
-              </span>
+            <div className="flex items-center py-1">
+              <img 
+                src="/cineveduka-logo.png" 
+                alt="Cineveduka Logo" 
+                className="h-8 md:h-9 w-auto object-contain"
+              />
             </div>
 
             {/* Center: "Advertisement" label */}

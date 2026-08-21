@@ -78,9 +78,10 @@ const AdminLogin = () => {
         
         {/* Branding header */}
         <div className="text-center space-y-2">
-          <span className="text-3xl font-black tracking-wider text-white select-none">
-            FILMY<span className="text-red-600">BOWL</span> <span className="text-xs bg-red-600 text-white font-bold ml-1 px-1.5 py-0.5 rounded-md uppercase">Admin</span>
-          </span>
+          <div className="flex flex-col items-center gap-2 py-1 select-none">
+            <img src="/cineveduka-logo.png" alt="Cineveduka Logo" className="h-10 w-auto object-contain" />
+            <span className="text-[10px] bg-red-600 text-white font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">Admin</span>
+          </div>
           <p className="text-xs text-neutral-400">వెబ్ పోర్టల్ అడ్మిన్ లాగిన్</p>
         </div>
 

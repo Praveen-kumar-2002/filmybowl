@@ -27,13 +27,15 @@ const Footer = () => {
           
           {/* Brand Info */}
           <div className="space-y-4">
-            <Link to="/" className="inline-block">
-              <span className="text-2xl font-black text-white tracking-wider flex items-center uppercase">
-                FILMY<span className="text-red-600">BOWL</span>
-              </span>
+            <Link to="/" className="inline-block py-1">
+              <img 
+                src="/cineveduka-logo.png" 
+                alt="Cineveduka Logo" 
+                className="h-10 md:h-12 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm leading-relaxed text-neutral-400">
-              ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.
+              సినీవేడుక న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.
             </p>
             {/* Social Icons */}
             <div className="flex items-center gap-3.5 pt-2">
@@ -122,7 +124,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2.5">
                 <FiMail className="text-red-600 text-lg shrink-0" />
-                <span>support@filmybowl.com</span>
+                <span>support@cineveduka.com</span>
               </li>
             </ul>
           </div>
@@ -135,7 +137,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
           <p className="text-neutral-500 text-center md:text-left">
-            &copy; {currentYear} Filmybowl. All rights reserved. Built with React & Tailwind CSS.
+            &copy; {currentYear} Cineveduka. All rights reserved. Built with React & Tailwind CSS.
           </p>
           <div className="flex items-center gap-4 text-neutral-500">
             <a href="#" className="hover:underline">సభ్యత్వం</a>

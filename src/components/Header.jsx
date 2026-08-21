@@ -145,10 +145,12 @@ const Header = () => {
         </button>
 
         {/* Logo */}
-        <Link to="/" className="shrink-0 flex items-center">
-          <span className="text-xl md:text-2xl font-black text-neutral-900 dark:text-white tracking-wider flex items-center uppercase">
-            FILMY<span className="text-red-600">BOWL</span>
-          </span>
+        <Link to="/" className="shrink-0 flex items-center py-1">
+          <img 
+            src="/cineveduka-logo.png" 
+            alt="Cineveduka Logo" 
+            className="h-10 md:h-12 lg:h-14 w-auto object-contain"
+          />
         </Link>
 
         {/* Search Bar Container */}
@@ -266,7 +268,7 @@ const Header = () => {
                   <FiYoutube />
                 </a>
               </div>
-              <p>&copy; {new Date().getFullYear()} Filmybowl</p>
+              <p>&copy; {new Date().getFullYear()} Cineveduka</p>
             </div>
           </div>
         </div>

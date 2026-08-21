@@ -92,18 +92,18 @@ export const AdminDataProvider = ({ children }) => {
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem('filmybowl_settings');
     const defaultSettings = {
-      websiteName: 'Filmybowl',
-      logoUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=150&q=80',
-      faviconUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=32&q=80',
-      contactEmail: 'support@filmybowl.com',
+      websiteName: 'Cineveduka',
+      logoUrl: '/cineveduka-logo.png',
+      faviconUrl: '/favicon.svg',
+      contactEmail: 'support@cineveduka.com',
       phoneNumber: '+91 98765 43210',
-      facebookUrl: 'https://facebook.com/filmybowl',
-      instagramUrl: 'https://instagram.com/filmybowl',
-      youtubeUrl: 'https://youtube.com/filmybowl',
-      twitterUrl: 'https://twitter.com/filmybowl',
-      metaTitle: 'Filmybowl - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
-      metaDescription: 'ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
-      keywords: 'Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
+      facebookUrl: 'https://facebook.com/cineveduka',
+      instagramUrl: 'https://instagram.com/cineveduka',
+      youtubeUrl: 'https://youtube.com/cineveduka',
+      twitterUrl: 'https://twitter.com/cineveduka',
+      metaTitle: 'Cineveduka - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
+      metaDescription: 'సినీവേడుక న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
+      keywords: 'Cineveduka, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
       theme: 'Dark',
       billboardAdImage: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80',
       billboardAdLink: 'https://images.unsplash.com'
@@ -645,18 +645,18 @@ export const AdminDataProvider = ({ children }) => {
     }
     // Local fallback
     const defaultSettings = {
-      websiteName: 'Filmybowl',
-      logoUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=150&q=80',
-      faviconUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=32&q=80',
-      contactEmail: 'support@filmybowl.com',
+      websiteName: 'Cineveduka',
+      logoUrl: '/cineveduka-logo.png',
+      faviconUrl: '/favicon.svg',
+      contactEmail: 'support@cineveduka.com',
       phoneNumber: '+91 98765 43210',
-      facebookUrl: 'https://facebook.com/filmybowl',
-      instagramUrl: 'https://instagram.com/filmybowl',
-      youtubeUrl: 'https://youtube.com/filmybowl',
-      twitterUrl: 'https://twitter.com/filmybowl',
-      metaTitle: 'Filmybowl - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
-      metaDescription: 'ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
-      keywords: 'Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
+      facebookUrl: 'https://facebook.com/cineveduka',
+      instagramUrl: 'https://instagram.com/cineveduka',
+      youtubeUrl: 'https://youtube.com/cineveduka',
+      twitterUrl: 'https://twitter.com/cineveduka',
+      metaTitle: 'Cineveduka - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు',
+      metaDescription: 'سينيفيدوكا - సినీవేడుక న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.',
+      keywords: 'Cineveduka, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office',
       theme: 'Dark'
     };
     setSettings(defaultSettings);

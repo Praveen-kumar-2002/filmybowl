@@ -404,18 +404,18 @@ const AdminDashboard = () => {
 
   const handleSettingsReset = () => {
     resetSettings();
-    setSetWebName('Filmybowl');
-    setSetLogo('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=150&q=80');
-    setSetFavicon('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=32&q=80');
-    setSetEmail('support@filmybowl.com');
+    setSetWebName('Cineveduka');
+    setSetLogo('/cineveduka-logo.png');
+    setSetFavicon('/favicon.svg');
+    setSetEmail('support@cineveduka.com');
     setSetPhone('+91 98765 43210');
-    setSetFacebook('https://facebook.com/filmybowl');
-    setSetInstagram('https://instagram.com/filmybowl');
-    setSetYoutube('https://youtube.com/filmybowl');
-    setSetTwitter('https://twitter.com/filmybowl');
-    setSetMetaTitle('Filmybowl - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు');
-    setSetMetaDesc('ఫిల్మీబౌల్ న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.');
-    setSetKeywords('Filmybowl, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office');
+    setSetFacebook('https://facebook.com/cineveduka');
+    setSetInstagram('https://instagram.com/cineveduka');
+    setSetYoutube('https://youtube.com/cineveduka');
+    setSetTwitter('https://twitter.com/cineveduka');
+    setSetMetaTitle('Cineveduka - తాజా టాలీవుడ్ సినిమా వార్తలు, రివ్యూలు');
+    setSetMetaDesc('సినీവേడుక న్యూస్ పోర్టల్ మీకు నిష్పక్షపాతంగా, వేగంగా మరియు కచ్చితమైన టాలీవుడ్ సినిమా వార్తలను, రివ్యూలను మరియు బాక్సాఫీస్ అప్‌డేట్స్‌ను అందిస్తుంది.');
+    setSetKeywords('Cineveduka, Telugu Cinema, Tollywood, Movie Reviews, Gossips, Box Office');
     setSetThemeMode('Dark');
     setSetBillboardImage('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80');
     setSetBillboardLink('https://images.unsplash.com');
@@ -477,11 +477,11 @@ const AdminDashboard = () => {
       <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-neutral-900 border-r border-neutral-850 flex flex-col justify-between transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-x lg:translate-x-0'}`}>
         <div>
           {/* Logo Brand Header */}
-          <div className="p-6 border-b border-neutral-850 flex items-center justify-between">
-            <span className="text-xl font-black tracking-wider text-white">
-              FILMY<span className="text-red-650">BOWL</span>
-              <span className="text-[10px] bg-red-600/10 text-red-500 font-extrabold ml-1 px-1.5 py-0.5 rounded border border-red-500/20">ADMIN</span>
-            </span>
+          <div className="p-6 border-b border-neutral-850 flex items-center justify-between gap-1.5">
+            <div className="flex items-center gap-1.5 py-1">
+              <img src="/cineveduka-logo.png" alt="Cineveduka Logo" className="h-8 w-auto object-contain" />
+              <span className="text-[10px] bg-red-600/10 text-red-500 font-extrabold px-1.5 py-0.5 rounded border border-red-500/20">ADMIN</span>
+            </div>
             <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-neutral-400 hover:text-white cursor-pointer">
               <FiX className="text-lg" />
             </button>

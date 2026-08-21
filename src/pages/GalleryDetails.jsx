@@ -105,7 +105,7 @@ const GalleryDetails = () => {
                 <FiEye /> {article.views.toLocaleString()} {translateText('వీక్షణలు', language)}
               </span>
               <span className="flex items-center gap-1">
-                <FiUser /> {translateText('రచన:', language)} {article.author || 'FilmyBowl Team'}
+                <FiUser /> {translateText('రచన:', language)} {article.author || 'Cineveduka Team'}
               </span>
             </div>
           </div>

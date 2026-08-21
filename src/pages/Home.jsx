@@ -288,38 +288,51 @@ const Home = () => {
               </div>
               <Link
                 to="/category/reviews"
-                className="inline-flex items-center gap-1 text-xs md:text-sm font-bold text-red-655 hover:text-red-700 transition-colors"
+                className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm"
               >
-                <span>{translateText('అన్నీ చూడండి', language)}</span>
-                <FiChevronRight className="text-base" />
+                <span>{language === 'te' ? 'మరిన్ని' : 'See More'}</span>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            {/* Grid of 4 columns */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
               {newsArticles
                 .filter(art => art.category === 'reviews')
-                .slice(0, 3)
+                .slice(0, 4)
                 .map(art => {
-                  const rating = (art.id.charCodeAt(art.id.length - 1) % 3) / 2 + 3.5;
-                  
+                  const isVishwanath = art.title.includes("Vishwanath") || art.title.includes("విశ్వనాథ్");
                   return (
-                    <div key={art.id} className="flex flex-col bg-white dark:bg-neutral-900 border border-neutral-150/60 dark:border-neutral-850 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group relative">
+                    <div key={art.id} className="flex flex-col group relative cursor-pointer">
                       <Link to={`/news/${art.id}`} className="absolute inset-0 z-10" />
-                      <div className="aspect-[2/3] w-full overflow-hidden relative bg-neutral-950">
-                        <img src={art.image} alt={art.title} className="w-full h-full object-cover transform duration-500 group-hover:scale-105" />
-                        <div className="absolute top-3 right-3 bg-black/80 text-white text-[9px] font-black px-2 py-0.5 rounded-md flex items-center gap-1 border border-white/10 shadow z-20">
-                          <span className="text-yellow-500">★</span>
-                          <span>{rating.toFixed(1)} / 5</span>
-                        </div>
+                      
+                      {/* Image container aspect-video */}
+                      <div className="aspect-[1.6/1] w-full rounded-2xl overflow-hidden relative shadow-sm border border-neutral-100 dark:border-neutral-850 bg-neutral-100 dark:bg-neutral-950">
+                        <img 
+                          src={art.image} 
+                          alt={art.title} 
+                          className="w-full h-full object-cover transform duration-500 group-hover:scale-103" 
+                        />
+                        
+                        {/* Rating Overlay on Image */}
+                        {isVishwanath && (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/5 z-10 pointer-events-none">
+                            <div className="bg-white/95 dark:bg-black/95 px-2.5 py-1 rounded-xl border border-neutral-200/50 dark:border-neutral-800 shadow-md text-center">
+                              <p className="text-[7.5px] font-black text-neutral-400 uppercase tracking-widest leading-none">Rating</p>
+                              <p className="text-xs font-black text-orange-500 mt-0.5">3.25 / 5</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Brown overlay tag bottom left */}
+                        <span className="absolute bottom-3 left-3 bg-[#9A5B20] text-white text-[8px] md:text-[8.5px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider z-20">
+                          {language === 'te' ? 'రివ్యూ' : 'REVIEW'}
+                        </span>
                       </div>
-                      <div className="p-4 flex-grow flex flex-col justify-between space-y-2">
-                        <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white line-clamp-2 leading-snug group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
-                          {translateText(art.title, language)}
-                        </h3>
-                        <p className="text-neutral-550 dark:text-neutral-400 text-[11px] line-clamp-2 leading-relaxed">
-                          {translateText(art.description, language)}
-                        </p>
-                      </div>
+                      
+                      {/* Title only, bold dark text */}
+                      <h3 className="text-xs md:text-sm font-black text-neutral-900 dark:text-neutral-100 line-clamp-2 leading-snug mt-2.5 group-hover:text-orange-500 transition-colors">
+                        {translateText(art.title, language)}
+                      </h3>
                     </div>
                   );
                 })}
